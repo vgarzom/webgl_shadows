@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style/style.css" type="text/css">
+
+  <script type="text/javascript" src="libs/bezier.js"></script>
+  <script type="text/javascript" src="libs/gl-matrix.js"></script>
+  <script type="text/javascript" src="libs/webgl-utils.js"></script>
+
+  <!-- Main Shader -->
+
+  <script id="shader-fs" type="x-shader/x-fragment">
+    varying highp vec2 vTextureCoord;
+    varying highp vec3 vLighting;
+
+    uniform bool uHasTexture;
+    uniform lowp vec4 uBodyColor;
+
+    uniform sampler2D uSampler;
+
+    varying lowp vec4 vColor;
+
+    void main(void) {
+      if (uHasTexture){
+        highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
+        gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
+      }else{
+        gl_FragColor = vec4(vColor.rgb * vLighting, vColor.a);
+      }
+    }
+  </script>
+
+  <script id="shader-vs" type="x-shader/x-vertex">
+    attribute vec4 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+    
+
+    uniform bool uHasTexture;
+    uniform lowp vec4 uBodyColor;
+
+    //Directional Light variables
+    uniform highp vec3 uDirectionalLightColor;
+    uniform highp vec3 uDirectionalLightDirection;
+
+    //Ambient Light
+    uniform highp vec3 uAmbientLight;
+
+    uniform mat4 uNormalMatrix;
+    uniform mat4 uModelViewMatrix;
+    uniform mat4 uProjectionMatrix;
+
+    varying highp vec2 vTextureCoord;
+    varying lowp vec4 vColor;
+    varying highp vec3 vLighting;
+
+    void main(void) {
+      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+      if (uHasTexture) {
+        vTextureCoord = aTextureCoord;
+      } else {
+        vColor = uBodyColor;
+      }
+
+      // Apply lighting effect
+
+      highp vec3 directionalVector = normalize(uDirectionalLightDirection);
+
+      highp vec4 transformedNormal = uNormalMatrix * vec4(aVertexNormal, 1.0);
+
+      highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
+      vLighting = uAmbientLight + (uDirectionalLightColor * directional);
+    }
+  </script>
+  <script type='text/javascript' src='interface_controller.js'></script>
+  <script type='text/javascript' src='libs/webgl-obj-loader.js'></script>
+  <script type='text/javascript' src='globals.js'></script>
+  <script type='text/javascript' src='helpers.js'></script>
+  <script type='text/javascript' src='figures.js'></script>
+  <script type='text/javascript' src='initialize.js'></script>
+  <script type='text/javascript' src='worldlogic.js'></script>
+  <script type='text/javascript' src='webgl.js'></script>
+</head>
+
+<body style='padding:0; margin:0;'>
+  <div id="container" style="background: white">
+    <p>Utiliza A,W,S,D para mover al rededor. Click y mueve el mouse para mover la camara</p>
+  </div>
+    <canvas id="mycanvas" style="border: solid 1px;" width="500" height="500"></canvas><br />
+
+</body>
+
+</html>
