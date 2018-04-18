@@ -44,8 +44,8 @@ function drawWorld() {
   
   mat4.rotate(app.projectionMatrix,  // destination matrix
     app.projectionMatrix,  // matrix to rotate
-    degToRad(45),     // amount to rotate in radians
-    [1, 1, 0]);       // axis to rotate around (X)
+    0.5*app.cubeRotation,     // amount to rotate in radians
+    [1, 0, 0]);       // axis to rotate around (X)
 
 
 
@@ -105,15 +105,82 @@ function drawWorld() {
     drawElement(app.buffers.cube, app.texture.bricks, false, [101.0/255.0, 154.0/255.0, 65.0/255.0, 1.0]);
   mvPopMatrix();
 
+  //Dibujamos la estación de policias
   mvPushMatrix()
-    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.0, 1.9, 1.7]);  // amount to translate
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.5, 1.9, 1.7]);  // amount to translate
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.5, 0.8, 0.5]);
     drawElement(app.buffers.cube, app.texture.police, true);
   mvPopMatrix();
 
+  //Dibujamos el restaurante al lado de la estación
+  mvPushMatrix()
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [4.8, 1.6, 1.7]);  // amount to translate
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.5, 0.5, 0.5]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0]);
+    drawElement(app.buffers.cube, app.texture.restaurant, true);
+  mvPopMatrix();
+
+  //Dibujamos la estación de gasolina
+  drawGasStation();
+
   app.cubeRotation += app.deltaTime;
+  updateDirectionalLightPosition();
 }
 
+function updateDirectionalLightPosition(){
+  app.lights.directionalLight.direction = [0.0, 3*Math.sin(0.1*app.cubeRotation), 3*Math.cos(0.1*app.cubeRotation)];
+}
+
+function drawGasStation(){
+  mvPushMatrix()
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.8, 1.6, -1.7]);  // amount to translate
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.5, 0.7, 0.6]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0]);
+    drawElement(app.buffers.cube, app.texture.restaurant, true);
+  mvPopMatrix();
+  mvPushMatrix()
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-2.9, 2.3, -1.7]);  // amount to translate
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.9, 0.02, 0.7]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0]);
+    drawElement(app.buffers.cube, null, false, [0.3,0.3,0.3,1.0]);
+  mvPopMatrix();
+  mvPushMatrix()
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-2.9, 2.3, -2.4]);  // amount to translate
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.85, 0.08, 0.08]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0]);
+    drawElement(app.buffers.cube, null, false, [1.0,1.0,1.0,1.0]);
+  mvPopMatrix();
+  mvPushMatrix()
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-2.9, 2.3, -1.0]);  // amount to translate
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.85, 0.08, 0.08]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0]);
+    drawElement(app.buffers.cube, null, false, [1.0,1.0,1.0,1.0]);
+  mvPopMatrix();
+  mvPushMatrix()
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-4.7, 2.3, -1.7]);  // amount to translate
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.08, 0.08, 0.7]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0]);
+    drawElement(app.buffers.cube, null, false, [1.0,1.0,1.0,1.0]);
+  mvPopMatrix();
+  mvPushMatrix()
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.1, 2.3, -1.7]);  // amount to translate
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.08, 0.08, 0.7]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0]);
+    drawElement(app.buffers.cube, null, false, [1.0,1.0,1.0,1.0]);
+  mvPopMatrix();
+  mvPushMatrix()
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-4.4, 1.6, -1.2]);  // amount to translate
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.08, 0.7, 0.08]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0]);
+    drawElement(app.buffers.cube, null, false, [0.1,0.1,0.1,1.0]);
+  mvPopMatrix();
+  mvPushMatrix()
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-4.4, 1.6, -2.2]);  // amount to translate
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.08, 0.7, 0.08]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0]);
+    drawElement(app.buffers.cube, null, false, [0.1,0.1,0.1,1.0]);
+  mvPopMatrix();
+}
 
 
 app.drawScene = drawWorld;

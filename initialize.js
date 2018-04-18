@@ -135,15 +135,8 @@ function initTexture( url) {
 }
 
 function initTextures(){
-  app.texture.baseball = initTexture( "textures/baseball.png" );
-  app.texture.bazooka = initTexture( "textures/bazooka.png" );
-  app.texture.bricks = initTexture( "textures/bricks.jpg" );
-  app.texture.coke = initTexture( "textures/coke1.png" );
-  app.texture.hersheys = initTexture( "textures/hersheys.jpg" );
-  app.texture.metal = initTexture( "textures/metal.jpg" );
-  app.texture.tennis = initTexture( "textures/tennis.png" );
-  app.texture.wood = initTexture( "textures/wood.jpg" );
   app.texture.police = initTexture( "textures/police_building.png" );
+  app.texture.restaurant = initTexture( "textures/rest_texture.png" );
 }
 
 function initBuffers() {

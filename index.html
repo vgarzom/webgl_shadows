@@ -57,7 +57,7 @@
     varying highp vec3 vLighting;
 
     void main(void) {
-      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+      
       if (uHasTexture) {
         vTextureCoord = aTextureCoord;
       } else {
@@ -72,6 +72,7 @@
 
       highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
       vLighting = uAmbientLight + (uDirectionalLightColor * directional);
+      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
     }
   </script>
   <script type='text/javascript' src='interface_controller.js'></script>
