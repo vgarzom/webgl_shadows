@@ -137,10 +137,12 @@ function initTexture( url) {
 function initTextures(){
   app.texture.police = initTexture( "textures/police_building.png" );
   app.texture.restaurant = initTexture( "textures/rest_texture.png" );
+  app.texture.hospital = initTexture( "textures/hospital_texture.png" );
 }
 
 function initBuffers() {
   app.buffers.cube = getCubeData();
-  app.buffers.cyl = getCylData();
+  app.buffers.cyl = getCylData(50);
   app.buffers.sphere = getSphereData();
+  app.buffers.hexagon = getCylData(6);
 }

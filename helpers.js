@@ -138,3 +138,14 @@ function mvPopMatrix() {
   mat4.copy(app.modelViewMatrix, app.mvMatrixStack.pop());
   //app.modelViewMatrix = app.mvMatrixStack.pop();
 }
+
+function getNormalVector(p1, p2, p3){
+  var a = [p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]];
+  var b = [p3[0] - p1[0], p3[1] - p1[1], p3[2] - p1[2]];
+  var n = [
+    a[1]*b[2] - a[2]*b[1],
+    a[0]*b[2] - a[2]*b[0],
+    a[1]*b[1] - a[1]*b[0]
+  ]
+  return n;
+}

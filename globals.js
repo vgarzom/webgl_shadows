@@ -56,7 +56,8 @@ app.lights = {
         color: [1.0, 1.0, 1.0],
         direction: [0.0, 0.0, 1.0]
     },
-    ambientLight: [0.0, 0.1, 0.5]
+    //ambientLight: [0.0, 0.1, 0.5]
+    ambientLight: [0.5, 0.5, 0.5]
 }
 //función para dibujar la escena
 
