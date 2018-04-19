@@ -51,13 +51,10 @@ function drawWorld() {
 
   app.modelViewMatrix = mat4.create();
 
+
   app.normalMatrix = mat4.create();
   mat4.invert(app.normalMatrix, app.modelViewMatrix);
   mat4.transpose(app.normalMatrix, app.normalMatrix);
-  mvPushMatrix();
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.0, 0.26, 0.0]);  // amount to translate
-  drawTruck();
-  mvPopMatrix();
 
   //Dibuamos el cubo de base
   mvPushMatrix();
@@ -110,18 +107,20 @@ function drawWorld() {
   mvPopMatrix();
 
   mvPushMatrix();
-  
+
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [1.8333, 0.26, 0.8]);  // amount to translate
-  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(180), [0,1,0]);
+  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(180), [0, 1, 0]);
   drawStreetLight();
   mvPopMatrix();
 
   mvPushMatrix();
-  
+
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-5.5, 0.26, 0.8]);  // amount to translate
-  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(180), [0,1,0]);
+  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(180), [0, 1, 0]);
   drawStreetLight();
   mvPopMatrix();
+
+  updateTruck();
 
   app.cubeRotation += app.deltaTime;
   updateDirectionalLightPosition();
@@ -131,6 +130,20 @@ function updateDirectionalLightPosition() {
   app.lights.directionalLight.direction = [3 * Math.cos(0.1 * app.cubeRotation),
   3 * Math.sin(0.1 * app.cubeRotation),
   3 * Math.sin(0.1 * app.cubeRotation)];
+}
+
+function updateTruck() {
+  app.truck.y = 0.26;
+  app.truck.z = -0.25;
+  app.truck.x -= app.truck.speed;
+
+  if (app.truck.x < -5.8){
+    app.truck.x = 5.8;
+  }
+  mvPushMatrix();
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [app.truck.x, app.truck.y, app.truck.z]);  // amount to translate
+  drawTruck();
+  mvPopMatrix();
 }
 
 app.drawScene = drawWorld;

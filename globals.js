@@ -45,6 +45,13 @@ app.camera = {
     y: 0,
     z: 0
 };
+
+app.truck = {
+    x: 0,
+    y: 0,
+    z: 0,
+    speed: 0.05
+}
 app.ismousedown = false;
 app.mousedown = {
     x: 0,
