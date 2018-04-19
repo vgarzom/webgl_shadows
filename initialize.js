@@ -138,6 +138,8 @@ function initTextures(){
   app.texture.police = initTexture( "textures/police_building.png" );
   app.texture.restaurant = initTexture( "textures/rest_texture.png" );
   app.texture.hospital = initTexture( "textures/hospital_texture.png" );
+  app.texture.radiostation = initTexture( "textures/radiostation_texture.png" );
+  app.texture.gas_machine = initTexture( "textures/gas_machine_texture.png" );
 }
 
 function initBuffers() {

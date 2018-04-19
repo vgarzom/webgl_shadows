@@ -40,7 +40,7 @@ function drawWorld() {
 
   mat4.translate(app.projectionMatrix,     // destination matrix
     app.projectionMatrix,     // matrix to translate
-    [0, 0.0, -10]);  // amount to translate
+    [0, 0.0, -15]);  // amount to translate
 
   mat4.rotate(app.projectionMatrix,  // destination matrix
     app.projectionMatrix,  // matrix to rotate
@@ -54,6 +54,7 @@ function drawWorld() {
   app.normalMatrix = mat4.create();
   mat4.invert(app.normalMatrix, app.modelViewMatrix);
   mat4.transpose(app.normalMatrix, app.normalMatrix);
+
 
   //Dibuamos el cubo de base
   mvPushMatrix();
@@ -70,47 +71,16 @@ function drawWorld() {
   drawHospital();
   mvPopMatrix();
 
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-3.0, 1.0, -1.7]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [2.4, 0.1, 0.9]);
-  drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
+  mvPushMatrix();
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [4.4447, 0.26, -2.4185]);  // amount to translate
+  drawRadioStation();
   mvPopMatrix();
 
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [3.8, 1.0, 1.7]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.6, 0.1, 0.9]);
-  drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
-  mvPopMatrix();
-
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.0, 1.0, 1.7]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.6, 0.1, 0.9]);
-  drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
-  mvPopMatrix();
-
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-3.8, 1.0, 1.7]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.6, 0.2, 0.9]);
-  drawElement(app.buffers.cube, app.texture.bricks, false, [101.0 / 255.0, 154.0 / 255.0, 65.0 / 255.0, 1.0]);
-  mvPopMatrix();
-
-  //Dibujamos la estación de policias
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.5, 1.9, 1.7]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.5, 0.8, 0.5]);
-  drawElement(app.buffers.cube, app.texture.police, true);
-  mvPopMatrix();
-
-  //Dibujamos el restaurante al lado de la estación
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [4.8, 1.6, 1.7]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.5, 0.5, 0.5]);
-  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0]);
-  drawElement(app.buffers.cube, app.texture.restaurant, true);
-  mvPopMatrix();
-
-  //Dibujamos la estación de gasolina
+  mvPushMatrix();
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-3.3087, 0.26, -2.4185]);  // amount to translate
   drawGasStation();
+  mvPopMatrix();
+
 
   app.cubeRotation += app.deltaTime;
   updateDirectionalLightPosition();
@@ -124,53 +94,84 @@ function updateDirectionalLightPosition() {
 
 function drawGasStation() {
   mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.8, 1.6, -1.7]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.5, 0.7, 0.6]);
-  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [4.7589, 0.02, 2.564]);
+  drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
+  mvPopMatrix();
+
+  mvPushMatrix(); //Dibujo del edificio
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [1.2248, 0.51, -0.0066]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.3146, 1, 1.6338]);
   drawElement(app.buffers.cube, app.texture.restaurant, true);
   mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-2.9, 2.3, -1.7]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.9, 0.02, 0.7]);
-  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0]);
-  drawElement(app.buffers.cube, null, false, [0.3, 0.3, 0.3, 1.0]);
+
+  mvPushMatrix(); //Techo gris
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.0247, 1.1019, -0.0085]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [4.0666, 0.1838, 1.8459]);
+  drawElement(app.buffers.cube, null, false, [209/255, 209/255, 209/255, 1.0]);
   mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-2.9, 2.3, -2.4]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.85, 0.08, 0.08]);
-  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0]);
-  drawElement(app.buffers.cube, null, false, [1.0, 1.0, 1.0, 1.0]);
+
+  mvPushMatrix(); //Bordes techo blanco izquierda
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-2.1001, 1.1019, 0]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.1838, 0.25, 1.8289]);
+  drawElement(app.buffers.cube, null, false, [1, 1, 1, 1.0]);
   mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-2.9, 2.3, -1.0]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.85, 0.08, 0.08]);
-  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0]);
-  drawElement(app.buffers.cube, null, false, [1.0, 1.0, 1.0, 1.0]);
-  mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-4.7, 2.3, -1.7]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.08, 0.08, 0.7]);
-  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0]);
-  drawElement(app.buffers.cube, null, false, [1.0, 1.0, 1.0, 1.0]);
-  mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.1, 2.3, -1.7]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.08, 0.08, 0.7]);
-  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0]);
-  drawElement(app.buffers.cube, null, false, [1.0, 1.0, 1.0, 1.0]);
-  mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-4.4, 1.6, -1.2]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.08, 0.7, 0.08]);
-  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0]);
-  drawElement(app.buffers.cube, null, false, [0.1, 0.1, 0.1, 1.0]);
-  mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-4.4, 1.6, -2.2]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.08, 0.7, 0.08]);
-  mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0]);
-  drawElement(app.buffers.cube, null, false, [0.1, 0.1, 0.1, 1.0]);
-  mvPopMatrix();
+
+  mvPushMatrix(); //Bordes techo blanco derecha
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [2.1001, 1.1019, 0]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.1838, 0.25, 1.8289]);
+  drawElement(app.buffers.cube, null, false, [1, 1, 1, 1.0]);
+  mvPopMatrix(); 
+  
+  mvPushMatrix(); //Bordes techo blanco frente
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0, 1.1019, 1.0063]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [4.384, 0.25, 0.1838]);
+  drawElement(app.buffers.cube, null, false, [1, 1, 1, 1.0]);
+  mvPopMatrix(); 
+
+  mvPushMatrix(); //Bordes techo blanco atras
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0, 1.1019, -1.0063]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [4.384, 0.25, 0.1838]);
+  drawElement(app.buffers.cube, null, false, [1, 1, 1, 1.0]);
+  mvPopMatrix(); 
+
+  //Columnas negras
+  mvPushMatrix();
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.6161, 0.51, -0.4963]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.12, 1, 0.12]);
+  drawElement(app.buffers.cube, null, false, [61/255, 61/255, 61/255, 1.0]);
+  mvPopMatrix(); 
+
+  mvPushMatrix();
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0, 0.51, -0.4963]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.12, 1, 0.12]);
+  drawElement(app.buffers.cube, null, false, [61/255, 61/255, 61/255, 1.0]);
+  mvPopMatrix(); 
+
+  mvPushMatrix();
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.6161, 0.51, 0.4963]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.12, 1, 0.12]);
+  drawElement(app.buffers.cube, null, false, [61/255, 61/255, 61/255, 1.0]);
+  mvPopMatrix(); 
+
+  mvPushMatrix();
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0, 0.51, 0.4963]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.12, 1, 0.12]);
+  drawElement(app.buffers.cube, null, false, [61/255, 61/255, 61/255, 1.0]);
+  mvPopMatrix(); 
+
+  //Maquinas
+  mvPushMatrix();
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.2678, 0.26, 0]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.2222, 0.5, 0.2222]);
+  drawElement(app.buffers.cube, app.texture.gas_machine, true);
+  mvPopMatrix(); 
+
+  mvPushMatrix();
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.3113, 0.26, 0]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.2222, 0.5, 0.2222]);
+  drawElement(app.buffers.cube, app.texture.gas_machine, true);
+  mvPopMatrix(); 
+
 }
 
 function drawHospital() {
@@ -197,91 +198,35 @@ function drawHospital() {
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.7612, 0.01, -0.6]);
     drawChair();
   mvPopMatrix();
-}
-
-function drawChair() {
+  //Dibujamos los árboles
   mvPushMatrix();
-    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.0, 0.04, 0.0]);
-    //Tablas inferiores
-    mvPushMatrix();
-      mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.055, 0.06, 0]);
-      mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.09, 0.02, 0.5]);
-      drawElement(app.buffers.cube, null, false, [216.0 / 255.0, 174.0 / 255.0, 172.0 / 255.0, 1.0]);
-    mvPopMatrix();
-    mvPushMatrix();
-      mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.055, 0.06, 0]);
-      mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.09, 0.02, 0.5]);
-      drawElement(app.buffers.cube, null, false, [216.0 / 255.0, 174.0 / 255.0, 172.0 / 255.0, 1.0]);
-    mvPopMatrix();
-    //Tablas espalda
-    mvPushMatrix();
-      mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.09, 0.13, 0]);
-      mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.02, 0.09, 0.5]);
-      drawElement(app.buffers.cube, null, false, [216.0 / 255.0, 174.0 / 255.0, 172.0 / 255.0, 1.0]);
-    mvPopMatrix();
-    mvPushMatrix();
-      mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.09, 0.24, 0]);
-      mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.02, 0.09, 0.5]);
-      drawElement(app.buffers.cube, null, false, [216.0 / 255.0, 174.0 / 255.0, 172.0 / 255.0, 1.0]);
-    mvPopMatrix();
-    //Dibujamos los cilindros
-    //Patas traseras
-    mvPushMatrix();
-      mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.12, 0.1, 0.2]);
-      mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.04, 0.3, 0.04]);
-      drawElement(app.buffers.cyl, null, false, [61/ 255.0, 61 / 255.0, 61 / 255.0, 1.0]);
-    mvPopMatrix();
-    mvPushMatrix();
-      mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.12, 0.1, -0.2]);
-      mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.04, 0.3, 0.04]);
-      drawElement(app.buffers.cyl, null, false, [61/ 255.0, 61 / 255.0, 61 / 255.0, 1.0]);
-    mvPopMatrix();
-    //Patas delanteras
-    mvPushMatrix();
-      mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.06, 0.0, 0.2]);
-      mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.04, 0.09, 0.04]);
-      drawElement(app.buffers.cyl, null, false, [61/ 255.0, 61 / 255.0, 61 / 255.0, 1.0]);
-    mvPopMatrix();
-    mvPushMatrix();
-      mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.06, 0.0, -0.2]);
-      mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.04, 0.09, 0.04]);
-      drawElement(app.buffers.cyl, null, false, [61/ 255.0, 61 / 255.0, 61 / 255.0, 1.0]);
-    mvPopMatrix();
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.2, 0.02, 0.8]);
+    drawTree([102/255, 155/255, 65/255, 1.0]);
+  mvPopMatrix();
+  mvPushMatrix();
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.2, 0.02, -0.8]);
+    drawPointLamp();
   mvPopMatrix();
 }
 
-function drawStreet() {
+function drawRadioStation() {
   mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.0, 0.26, -0.0]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [12, 0.02, 1]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [2.3795, 0.02, 2.564]);
   drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
   mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-3.42, 0.26, -0.8183]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1, 0.02, 0.64]);
-  drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
-  mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [2.2333, 0.26, -0.8183]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1, 0.02, 0.64]);
-  drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
-  mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [4.6621, 0.26, -0.8183]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1, 0.02, 0.64]);
-  drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
-  mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [4.0165, 0.26, 0.7838]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1, 0.02, 0.64]);
-  drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
-  mvPopMatrix();
-  mvPushMatrix()
-  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.0046, 0.26, 0.7838]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1, 0.02, 0.64]);
-  drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
-  mvPopMatrix();
-}
 
+  mvPushMatrix(); //Dibujo del edificio
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.3, 0.86, -0.0921]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.162, 1.7, 1.162]);
+  drawElement(app.buffers.cube, app.texture.radiostation, true);
+  mvPopMatrix();
+  
+  for (var i = 0; i < 4; i++){
+    mvPushMatrix();
+      mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.0, 0.02, 0.8-i*0.5451]);
+      drawTree([102/255, 155/255, 65/255, 1.0]);
+    mvPopMatrix();
+  }
+}
 
 app.drawScene = drawWorld;

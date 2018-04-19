@@ -307,7 +307,7 @@ function getCylData(faces) {
 
 function getSphereData() {
   console.log("Finding shpere data")
-  const faces = 100;
+  const faces = 50;
   const ylong = 1 / faces;
   const angle = 360.0 / faces;
   var r = 0.5;
@@ -318,6 +318,7 @@ function getSphereData() {
   const spherePositions = [];
   const sphereIndices = [];
   var sphereTextureCoordinates = [];
+  const sphereNormals = [];
 
   for (var i = -1 * ((faces / 2)); i < faces / 2; i++) { //Recorremos 
     var y0 = i * ylong;
@@ -336,6 +337,22 @@ function getSphereData() {
         r1 * Math.cos(degToRad((j + 1) * angle)), y1, r1 * Math.sin(degToRad((j + 1) * angle)), //5
       ];
 
+      var ln = getNormalVector( //Normal de las caras laterales, ambas caras contienen la misma normal
+        [r0 * Math.cos(degToRad(j * angle)), y0, r0 * Math.sin(degToRad(j * angle))], //0
+        [r1 * Math.cos(degToRad(j * angle)), y1, r1 * Math.sin(degToRad(j * angle))], //1
+        [r1 * Math.cos(degToRad((j + 1) * angle)), y1, r1 * Math.sin(degToRad((j + 1) * angle))]
+      ); 
+
+      var vertexNormals = [
+        ln[0], ln[1], ln[2],
+        ln[0], ln[1], ln[2],
+        ln[0], ln[1], ln[2],
+  
+        ln[0], ln[1], ln[2],
+        ln[0], ln[1], ln[2],
+        ln[0], ln[1], ln[2]
+      ]
+
       var texturePoints = [
         j * angle / 360.0, 0.5 + y0, //0
         j * angle / 360.0, 0.5 + y1, //1
@@ -351,6 +368,10 @@ function getSphereData() {
 
       for (var k = 0; k < texturePoints.length; k++) {
         sphereTextureCoordinates.push(texturePoints[k]);
+      }
+
+      for (var k = 0; k < vertexNormals.length; k++) {
+        sphereNormals.push(vertexNormals[k]);
       }
     }
   }
@@ -372,6 +393,10 @@ function getSphereData() {
   gl.bindBuffer(gl.ARRAY_BUFFER, sphereTextureCoordBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sphereTextureCoordinates), gl.STATIC_DRAW);
 
+  const normalBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sphereNormals), gl.STATIC_DRAW);
+
   const sphereIndexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereIndexBuffer);
 
@@ -383,6 +408,7 @@ function getSphereData() {
     position: spherePositionBuffer,
     textureCoord: sphereTextureCoordBuffer,
     indices: sphereIndexBuffer,
-    vertexCount: sphereVertexCount
+    vertexCount: sphereVertexCount,
+    normal: normalBuffer
   };
 }
