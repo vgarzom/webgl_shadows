@@ -398,3 +398,37 @@ function drawPark() {
     drawPointLamp();
     mvPopMatrix();
 }
+
+function drawTruck(){
+    mvPushMatrix();
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0, 0.53, 0]);
+    mvPushMatrix();
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.1032, -0.2757, 0]);
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.5823, 0.3632, 0.28]);
+    drawElement(app.buffers.cube, null, false, [1, 1, 1, 1.0]);
+    mvPopMatrix();
+    mvPushMatrix();
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.2912, -0.39, 0]);
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.2065, 0.1245, 0.25]);
+    drawElement(app.buffers.cube, null, false, [236/255, 83/255, 85/255, 1.0]);
+    mvPopMatrix();
+    mvPushMatrix();
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.2539, -0.2749, 0]);
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.1318, 0.1112, 0.25]);
+    drawElement(app.buffers.cube, null, false, [236/255, 83/255, 85/255, 1.0]);
+    mvPopMatrix();
+
+    mvPushMatrix();
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.2912, -0.45, 0]);
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.1255, 0.1255, 0.3]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(90), [1,0,0]);
+    drawElement(app.buffers.cyl, null, false, [61/255, 61/255, 61/255, 1.0]);
+    mvPopMatrix();
+    mvPushMatrix();
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.2912, -0.45, 0]);
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.1255, 0.1255, 0.3]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(90), [1,0,0]);
+    drawElement(app.buffers.cyl, null, false, [61/255, 61/255, 61/255, 1.0]);
+    mvPopMatrix();
+    mvPopMatrix();
+}

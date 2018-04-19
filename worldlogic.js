@@ -54,6 +54,10 @@ function drawWorld() {
   app.normalMatrix = mat4.create();
   mat4.invert(app.normalMatrix, app.modelViewMatrix);
   mat4.transpose(app.normalMatrix, app.normalMatrix);
+  mvPushMatrix();
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.0, 0.26, 0.0]);  // amount to translate
+  drawTruck();
+  mvPopMatrix();
 
   //Dibuamos el cubo de base
   mvPushMatrix();
