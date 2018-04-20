@@ -20,6 +20,9 @@ function Array2Buffer(array, iSize, nSize) {
 function drawElement(buffer, textureobj, hasTexture, bodyColor = [1.0, 1.0, 1.0]) {
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute
+
+  mat4.transpose(app.normalMatrix, mat4.invert(app.normalMatrix, app.modelViewMatrix));
+  
   {
     const numComponents = 3;
     const type = gl.FLOAT;
@@ -66,14 +69,14 @@ function drawElement(buffer, textureobj, hasTexture, bodyColor = [1.0, 1.0, 1.0]
     const offset = 0;
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer.normal);
     gl.vertexAttribPointer(
-        app.programInfo.attribLocations.vertexNormal,
-        numComponents,
-        type,
-        normalize,
-        stride,
-        offset);
+      app.programInfo.attribLocations.vertexNormal,
+      numComponents,
+      type,
+      normalize,
+      stride,
+      offset);
     gl.enableVertexAttribArray(
-        app.programInfo.attribLocations.vertexNormal);
+      app.programInfo.attribLocations.vertexNormal);
   }
 
   // Tell WebGL which indices to use to index the vertices
@@ -94,9 +97,9 @@ function drawElement(buffer, textureobj, hasTexture, bodyColor = [1.0, 1.0, 1.0]
     false,
     app.modelViewMatrix);
   gl.uniformMatrix4fv(
-      app.programInfo.uniformLocations.normalMatrix,
-      false,
-      app.normalMatrix);
+    app.programInfo.uniformLocations.normalMatrix,
+    false,
+    app.normalMatrix);
   gl.uniform1i(app.programInfo.uniformLocations.hasTexture, hasTexture);
   gl.uniform4f(app.programInfo.uniformLocations.bodyColor, bodyColor[0], bodyColor[1], bodyColor[2], bodyColor[3]);
 
@@ -139,13 +142,11 @@ function mvPopMatrix() {
   //app.modelViewMatrix = app.mvMatrixStack.pop();
 }
 
-function getNormalVector(p1, p2, p3){
+function getNormalVector(p1, p2, p3) {
   var a = [p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]];
   var b = [p3[0] - p1[0], p3[1] - p1[1], p3[2] - p1[2]];
-  var n = [
-    a[1]*b[2] - a[2]*b[1],
-    a[0]*b[2] - a[2]*b[0],
-    a[1]*b[1] - a[1]*b[0]
-  ]
+  var n = [];
+  vec3.cross(n, a, b);
+  vec3.normalize(n, n);
   return n;
 }

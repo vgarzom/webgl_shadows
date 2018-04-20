@@ -31,12 +31,7 @@ function drawWorld() {
     app.zFar);
 
 
-  //Fijamos las variables de las luces
-  gl.uniform3f(app.programInfo.lightLocations.directionalLight.color, app.lights.directionalLight.color[0], app.lights.directionalLight.color[1], app.lights.directionalLight.color[2]);
-  gl.uniform3f(app.programInfo.lightLocations.directionalLight.direction, app.lights.directionalLight.direction[0], app.lights.directionalLight.direction[1], app.lights.directionalLight.direction[2]);
-  gl.uniform3f(app.programInfo.lightLocations.ambientLight, app.lights.ambientLight[0], app.lights.ambientLight[1], app.lights.ambientLight[2]);
-  // Now move the drawing position a bit to where we want to
-  // start drawing the square.
+  
 
   mat4.translate(app.projectionMatrix,     // destination matrix
     app.projectionMatrix,     // matrix to translate
@@ -44,17 +39,25 @@ function drawWorld() {
 
   mat4.rotate(app.projectionMatrix,  // destination matrix
     app.projectionMatrix,  // matrix to rotate
+    app.camera.y,     // amount to rotate in radians
+    [0, 1, 0]);       // axis to rotate around (X)
+
+  mat4.rotate(app.projectionMatrix,  // destination matrix
+    app.projectionMatrix,  // matrix to rotate
     app.camera.x,     // amount to rotate in radians
     [1, 0, 0]);       // axis to rotate around (X)
 
-
-
   app.modelViewMatrix = mat4.create();
 
-
+  //Reiniciamos el vector de luces puntuales
+  //app.lights.pointLights = [];
+    
+  //Fijamos las variables de las luces
+  gl.uniform3f(app.programInfo.lightLocations.directionalLight.color, app.lights.directionalLight.color[0], app.lights.directionalLight.color[1], app.lights.directionalLight.color[2]);
+  gl.uniform3f(app.programInfo.lightLocations.directionalLight.direction, app.lights.directionalLight.direction[0], app.lights.directionalLight.direction[1], app.lights.directionalLight.direction[2]);
+  gl.uniform3f(app.programInfo.lightLocations.ambientLight, app.lights.ambientLight[0], app.lights.ambientLight[1], app.lights.ambientLight[2]);
+  
   app.normalMatrix = mat4.create();
-  mat4.invert(app.normalMatrix, app.modelViewMatrix);
-  mat4.transpose(app.normalMatrix, app.normalMatrix);
 
   //Dibuamos el cubo de base
   mvPushMatrix();
@@ -122,14 +125,35 @@ function drawWorld() {
 
   updateTruck();
 
-  app.cubeRotation += app.deltaTime;
+  updateDayTime();
+  updateAmbientalLight();
   updateDirectionalLightPosition();
+  updatePointLights();
+}
+
+function updateDayTime(){
+  app.dayTime += app.deltaTime;
+  if (app.dayTime >= 24){
+    app.dayTime = 0;
+  }
 }
 
 function updateDirectionalLightPosition() {
-  app.lights.directionalLight.direction = [3 * Math.cos(0.1 * app.cubeRotation),
-  3 * Math.sin(0.1 * app.cubeRotation),
-  3 * Math.sin(0.1 * app.cubeRotation)];
+  app.lights.directionalLight.direction = [0,
+  3 * Math.sin(degToRad(15*app.dayTime - 90)),
+  3 * Math.cos(degToRad(15*app.dayTime - 90))]
+}
+
+function updateAmbientalLight(){
+  if (app.dayTime > 0 && app.dayTime <= 7){
+    app.lights.ambientLight = [0.0, 0.1, 0.5];
+  }else if (app.dayTime > 7 && app.dayTime <= 16.5){
+    app.lights.ambientLight = [0.5, 0.5, 0.5];
+  }else if (app.dayTime > 16.7 && app.dayTime <= 19){
+    app.lights.ambientLight = [221/255, 152/255, 58/255];
+  }else if (app.dayTime > 19 && app.dayTime <= 24){
+    app.lights.ambientLight = [0.0, 0.1, 0.5];
+  }
 }
 
 function updateTruck() {
@@ -137,13 +161,28 @@ function updateTruck() {
   app.truck.z = -0.25;
   app.truck.x -= app.truck.speed;
 
-  if (app.truck.x < -5.8){
+  if (app.truck.x < -5.8) {
     app.truck.x = 5.8;
   }
   mvPushMatrix();
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [app.truck.x, app.truck.y, app.truck.z]);  // amount to translate
   drawTruck();
   mvPopMatrix();
+}
+
+function updatePointLights() {
+  console.log(app.lights.pointLights.length);
+  gl.uniform1i(app.programInfo.lightLocations.currentPointLightCount, app.lights.pointLights.length);
+  for (var i = 0; i < app.lights.pointLights.length; i++){
+    var intensity = app.lights.pointLights[i].intensity;
+    if (app.dayTime > 7 && app.dayTime < 19.5){
+      intensity = 0.0;
+    }
+    var pl = app.programInfo.lightLocations.pointLights[i];
+    gl.uniform1f(pl.intensity, intensity);
+    gl.uniform4f(pl.color, app.lights.pointLights[i].color[0], app.lights.pointLights[i].color[1], app.lights.pointLights[i].color[2], app.lights.pointLights[i].color[3]);
+    gl.uniform3f(pl.position, app.lights.pointLights[i].position[0], app.lights.pointLights[i].position[1], app.lights.pointLights[i].position[2]);
+  }
 }
 
 app.drawScene = drawWorld;

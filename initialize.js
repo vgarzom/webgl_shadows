@@ -81,7 +81,25 @@ function initProgramInfo() {
         color: gl.getUniformLocation(app.shaderProgram, 'uDirectionalLightColor'),
         direction: gl.getUniformLocation(app.shaderProgram, 'uDirectionalLightDirection')
       },
-      ambientLight: gl.getUniformLocation(app.shaderProgram, 'uAmbientLight')
+      ambientLight: gl.getUniformLocation(app.shaderProgram, 'uAmbientLight'),
+      pointLights: [
+        {
+          intensity: gl.getUniformLocation(app.shaderProgram, 'uPointLights[0].intensity'),
+          color: gl.getUniformLocation(app.shaderProgram, 'uPointLights[0].color'),
+          position: gl.getUniformLocation(app.shaderProgram, 'uPointLights[0].position'),
+        },
+        {
+          intensity: gl.getUniformLocation(app.shaderProgram, 'uPointLights[1].intensity'),
+          color: gl.getUniformLocation(app.shaderProgram, 'uPointLights[1].color'),
+          position: gl.getUniformLocation(app.shaderProgram, 'uPointLights[1].position'),
+        },
+        {
+          intensity: gl.getUniformLocation(app.shaderProgram, 'uPointLights[2].intensity'),
+          color: gl.getUniformLocation(app.shaderProgram, 'uPointLights[2].color'),
+          position: gl.getUniformLocation(app.shaderProgram, 'uPointLights[2].position'),
+        }
+      ],
+      currentPointLightCount: gl.getUniformLocation(app.shaderProgram, 'uCurrentPointLightPoint'),
     }
   };
 }

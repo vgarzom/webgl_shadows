@@ -115,7 +115,20 @@ function drawPointLamp() {
     mvPushMatrix()
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0, 0.52, 0]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.3, 0.3, 0.3]);
-    drawElement(app.buffers.sphere, null, false, [1.0, 1.0, 1.0, 1.0]);
+    if(app.dayTime > 7 && app.dayTime < 19.5){
+        drawElement(app.buffers.sphere, null, false, [0.7, 0.7, 0.7, 1.0]);
+    }else{
+        drawElement(app.buffers.sphere, null, false, [1.0, 1.0, 1.0, 0.1]);
+    }
+    var worldPosition = vec3.create();
+    mat4.getTranslation(worldPosition, app.modelViewMatrix);
+    if (app.lights.pointLights.length < 3) {
+        app.lights.pointLights.push({
+            intensity: 0.3,
+            color: [1.0, 1.0, 1.0, 1.0],
+            position: worldPosition
+        });
+    }
     mvPopMatrix();
 }
 
@@ -298,12 +311,13 @@ function drawPoliceStation() {
 
     mvPushMatrix(); //Dibujo del edificio
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.5413, 0.66, 0]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.14, 1.3, 1.14]);
     drawElement(app.buffers.cube, app.texture.police, true);
     mvPopMatrix();
     mvPushMatrix(); //Dibujo del edificio
-    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.5413, 0.66, 0.6809]);
-    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.5938, 0.04, 0.2254]);
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.2222, 0.66, 0]);
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.2254, 0.04, 0.5938]);
     drawElement(app.buffers.cube, null, false, [65 / 255.0, 156 / 255.0, 200 / 255.0, 1.0]);
     mvPopMatrix();
 
@@ -366,40 +380,40 @@ function drawPark() {
     //Dibujamos las sillas
     mvPushMatrix();
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.5183, 0.02, -0.66]);
-    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(90), [0,1,0])
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(90), [0, 1, 0])
     drawChair();
     mvPopMatrix();
     mvPushMatrix();
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.5183, 0.02, -0.66]);
-    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(90), [0,1,0])
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(90), [0, 1, 0])
     drawChair();
     mvPopMatrix();
 
     mvPushMatrix();
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.5183, 0.02, 0.66]);
-    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0])
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0])
     drawChair();
     mvPopMatrix();
     mvPushMatrix();
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.5183, 0.02, 0.66]);
-    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0])
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0])
     drawChair();
     mvPopMatrix();
 
     // Dibujamos las lámparas
     mvPushMatrix();
-    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.5183, 0.02, 0]);
-    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0])
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.0366, 0.02, 0]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0])
     drawPointLamp();
     mvPopMatrix();
     mvPushMatrix();
-    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.5183, 0.02, 0]);
-    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0,1,0])
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [1.0366, 0.02, 0]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0])
     drawPointLamp();
     mvPopMatrix();
 }
 
-function drawTruck(){
+function drawTruck() {
     mvPushMatrix();
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0, 0.53, 0]);
     mvPushMatrix();
@@ -410,25 +424,25 @@ function drawTruck(){
     mvPushMatrix();
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.2912, -0.39, 0]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.2065, 0.1245, 0.25]);
-    drawElement(app.buffers.cube, null, false, [236/255, 83/255, 85/255, 1.0]);
+    drawElement(app.buffers.cube, null, false, [236 / 255, 83 / 255, 85 / 255, 1.0]);
     mvPopMatrix();
     mvPushMatrix();
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.2539, -0.2749, 0]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.1318, 0.1112, 0.25]);
-    drawElement(app.buffers.cube, null, false, [236/255, 83/255, 85/255, 1.0]);
+    drawElement(app.buffers.cube, null, false, [236 / 255, 83 / 255, 85 / 255, 1.0]);
     mvPopMatrix();
 
     mvPushMatrix();
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.2912, -0.45, 0]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.1255, 0.1255, 0.3]);
-    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(90), [1,0,0]);
-    drawElement(app.buffers.cyl, null, false, [61/255, 61/255, 61/255, 1.0]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(90), [1, 0, 0]);
+    drawElement(app.buffers.cyl, null, false, [61 / 255, 61 / 255, 61 / 255, 1.0]);
     mvPopMatrix();
     mvPushMatrix();
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.2912, -0.45, 0]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.1255, 0.1255, 0.3]);
-    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(90), [1,0,0]);
-    drawElement(app.buffers.cyl, null, false, [61/255, 61/255, 61/255, 1.0]);
+    mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(90), [1, 0, 0]);
+    drawElement(app.buffers.cyl, null, false, [61 / 255, 61 / 255, 61 / 255, 1.0]);
     mvPopMatrix();
     mvPopMatrix();
 }

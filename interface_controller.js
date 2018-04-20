@@ -33,8 +33,8 @@ function initInterfaceListeners() {
 
     document.addEventListener("mousemove", function (event) {
         if (app.ismousedown) {
-            var movex = 0.0001 * (app.mousedown.y - event.clientY);
-            var movey = 0.0001 * (app.mousedown.x - event.clientx);
+            var movex = 0.00005 * (app.mousedown.y - event.clientY);
+            var movey = 0.00005 * (app.mousedown.x - event.clientX);
             app.camera.x -= movex;
             app.camera.y -= movey;
         }

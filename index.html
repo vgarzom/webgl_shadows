@@ -33,11 +33,17 @@
   </script>
 
   <script id="shader-vs" type="x-shader/x-vertex">
+    //Estructura de datos para las luces puntuales
+    struct PointLightInfo {
+      vec3 position; //Posicion de la luz puntual
+      vec4 color; //Color de la luz puntual
+      float intensity; //Intensidad de la luz puntual
+    };
+
     attribute vec4 aVertexPosition;
     attribute vec3 aVertexNormal;
     attribute vec2 aTextureCoord;
     
-
     uniform bool uHasTexture;
     uniform lowp vec4 uBodyColor;
 
@@ -48,6 +54,11 @@
     //Ambient Light
     uniform highp vec3 uAmbientLight;
 
+    //Point Lights
+    const int pointLightCount = 3;
+    uniform int uCurrentPointLightCount;
+    uniform PointLightInfo uPointLights[pointLightCount];
+
     uniform mat4 uNormalMatrix;
     uniform mat4 uModelViewMatrix;
     uniform mat4 uProjectionMatrix;
@@ -56,7 +67,13 @@
     varying lowp vec4 vColor;
     varying highp vec3 vLighting;
 
+    vec3 addPointLight(int index, vec4 eye_position, vec4 normal){
+      vec3 s = normalize (uPointLights[index].position - eye_position.xyz);
+      return uPointLights[index].intensity * uPointLights[index].color.rgb * max(dot(s, normal.xyz), 0.0 );
+    }
+    
     void main(void) {
+      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
       
       if (uHasTexture) {
         vTextureCoord = aTextureCoord;
@@ -66,13 +83,18 @@
 
       // Apply lighting effect
 
+      // Directional Light
       highp vec3 directionalVector = normalize(uDirectionalLightDirection);
-
-      highp vec4 transformedNormal = uNormalMatrix * vec4(aVertexNormal, 1.0);
-
+      highp vec4 transformedNormal = normalize(uNormalMatrix * vec4(aVertexNormal, 1.0));
       highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
+
       vLighting = uAmbientLight + (uDirectionalLightColor * directional);
-      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+
+      // Point Light
+      vec4 eye_position = uModelViewMatrix * aVertexPosition;
+      for (int i = 0; i < 3; i++){
+        vLighting += addPointLight(i, eye_position, transformedNormal);
+      }
     }
   </script>
   <script type='text/javascript' src='interface_controller.js'></script>
