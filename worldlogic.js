@@ -127,6 +127,7 @@ function drawWorld() {
   updateTruck();
 
   updateDayTime();
+  app.dayTime = 24;
   updateAmbientalLight();
   updateDirectionalLightPosition();
   updatePointLights();

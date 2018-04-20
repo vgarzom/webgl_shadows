@@ -126,19 +126,19 @@ function drawPointLamp() {
     drawElement(app.buffers.cyl, null, false, [192.0 / 255.0, 154.0 / 255.0, 108.0 / 255.0, 1.0]);
     mvPopMatrix();
     mvPushMatrix()
-    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0, 0.52, 0]);
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0, 0.55, 0]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.3, 0.3, 0.3]);
     if(app.dayTime > 7 && app.dayTime < 19.5){
         drawElement(app.buffers.sphere, null, false, [0.7, 0.7, 0.7, 1.0]);
     }else{
-        drawElement(app.buffers.sphere, null, false, [1.0, 1.0, 1.0, 0.1]);
+        drawElement(app.buffers.sphere, null, false, [255/255, 205/255, 52/255, 0.01]);
     }
     var worldPosition = vec3.create();
     mat4.getTranslation(worldPosition, app.modelViewMatrix);
     if (app.lights.pointLights.length < 3) {
         app.lights.pointLights.push({
-            intensity: 0.3,
-            color: [1.0, 1.0, 1.0, 1.0],
+            intensity: 0.7,
+            color: [255/255, 205/255, 52/255, 1.0],
             position: worldPosition
         });
     }
