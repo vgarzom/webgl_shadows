@@ -98,6 +98,19 @@ function drawStreetLight() {
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0, 0.77, 0.45]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.1, 0.1, 0.2]);
     drawElement(app.buffers.cube, null, false, [65 / 255.0, 156 / 255.0, 200 / 255.0, 1.0]);
+    
+    var worldPosition = vec3.create();
+    mat4.getTranslation(worldPosition, app.modelViewMatrix);
+    if (app.lights.spotLights.length < 4) {
+        app.lights.spotLights.push({
+            intensity: [1.0, 1.0, 1.0],
+            color: [1.0, 1.0, 1.0, 1.0],
+            position: worldPosition,
+            direction: [0.0, -1.0, 0.0],
+            exponent: 0.3,
+            cutoff: 30.0
+        });
+    }
     mvPopMatrix();
 }
 

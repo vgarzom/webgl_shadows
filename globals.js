@@ -60,12 +60,14 @@ app.mousedown = {
 
 app.lights = {
     directionalLight: {
-        color: [1, 1, 1],
-        direction: [0.0, 0.0, 1.0]
+        color: [1, 1, 1, 1],
+        direction: [0.0, 0.0, 1.0],
+        intensity: 1.0
     },
     //ambientLight: [0.0, 0.1, 0.5]
     ambientLight: [221/255, 152/255, 58/255],
-    pointLights: []
+    pointLights: [],
+    spotLights: []
 }
 
 app.times = 0;

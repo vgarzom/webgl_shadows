@@ -78,30 +78,38 @@ function initProgramInfo() {
     },
     lightLocations: {
       directionalLight: {
-        color: gl.getUniformLocation(app.shaderProgram, 'uDirectionalLightColor'),
-        direction: gl.getUniformLocation(app.shaderProgram, 'uDirectionalLightDirection')
+        color: gl.getUniformLocation(app.shaderProgram, 'uDirectionalLight.color'),
+        direction: gl.getUniformLocation(app.shaderProgram, 'uDirectionalLight.position'),
+        intensity: gl.getUniformLocation(app.shaderProgram, 'uDirectionalLight.intensity'),
       },
       ambientLight: gl.getUniformLocation(app.shaderProgram, 'uAmbientLight'),
-      pointLights: [
-        {
-          intensity: gl.getUniformLocation(app.shaderProgram, 'uPointLights[0].intensity'),
-          color: gl.getUniformLocation(app.shaderProgram, 'uPointLights[0].color'),
-          position: gl.getUniformLocation(app.shaderProgram, 'uPointLights[0].position'),
-        },
-        {
-          intensity: gl.getUniformLocation(app.shaderProgram, 'uPointLights[1].intensity'),
-          color: gl.getUniformLocation(app.shaderProgram, 'uPointLights[1].color'),
-          position: gl.getUniformLocation(app.shaderProgram, 'uPointLights[1].position'),
-        },
-        {
-          intensity: gl.getUniformLocation(app.shaderProgram, 'uPointLights[2].intensity'),
-          color: gl.getUniformLocation(app.shaderProgram, 'uPointLights[2].color'),
-          position: gl.getUniformLocation(app.shaderProgram, 'uPointLights[2].position'),
-        }
-      ],
-      currentPointLightCount: gl.getUniformLocation(app.shaderProgram, 'uCurrentPointLightPoint'),
+      pointLights: [],
+      spotLights: [],
     }
   };
+
+  for (var i = 0; i < 3; i++){
+    app.programInfo.lightLocations.pointLights.push(
+      {
+        intensity: gl.getUniformLocation(app.shaderProgram, 'uPointLights['+i+'].intensity'),
+        color: gl.getUniformLocation(app.shaderProgram, 'uPointLights['+i+'].color'),
+        position: gl.getUniformLocation(app.shaderProgram, 'uPointLights['+i+'].position'),
+      }
+    );
+  }
+
+  for (var i = 0; i < 4; i++){
+    app.programInfo.lightLocations.spotLights.push(
+      {
+        intensity: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].intensity'),
+        color: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].color'),
+        position: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].position'),
+        direction: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].direction'),
+        exponent: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].exponent'),
+        cutoff: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].cutoff')
+      }
+    );
+  }
 }
 
 function initTexture( url) {

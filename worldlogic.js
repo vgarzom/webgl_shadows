@@ -53,8 +53,9 @@ function drawWorld() {
   //app.lights.pointLights = [];
     
   //Fijamos las variables de las luces
-  gl.uniform3f(app.programInfo.lightLocations.directionalLight.color, app.lights.directionalLight.color[0], app.lights.directionalLight.color[1], app.lights.directionalLight.color[2]);
+  gl.uniform4f(app.programInfo.lightLocations.directionalLight.color, app.lights.directionalLight.color[0], app.lights.directionalLight.color[1], app.lights.directionalLight.color[2], app.lights.directionalLight.color[3]);
   gl.uniform3f(app.programInfo.lightLocations.directionalLight.direction, app.lights.directionalLight.direction[0], app.lights.directionalLight.direction[1], app.lights.directionalLight.direction[2]);
+  gl.uniform1f(app.programInfo.lightLocations.directionalLight.intensity, app.lights.directionalLight.intensity);
   gl.uniform3f(app.programInfo.lightLocations.ambientLight, app.lights.ambientLight[0], app.lights.ambientLight[1], app.lights.ambientLight[2]);
   
   app.normalMatrix = mat4.create();
@@ -129,6 +130,7 @@ function drawWorld() {
   updateAmbientalLight();
   updateDirectionalLightPosition();
   updatePointLights();
+  updateSpotLights();
 }
 
 function updateDayTime(){
@@ -142,6 +144,10 @@ function updateDirectionalLightPosition() {
   app.lights.directionalLight.direction = [0,
   3 * Math.sin(degToRad(15*app.dayTime - 90)),
   3 * Math.cos(degToRad(15*app.dayTime - 90))]
+  if(app.dayTime > 5 && app.dayTime < 20)
+    app.lights.directionalLight.intensity = 1.0;
+  else
+    app.lights.directionalLight.intensity = 0.0;
 }
 
 function updateAmbientalLight(){
@@ -158,7 +164,7 @@ function updateAmbientalLight(){
 
 function updateTruck() {
   app.truck.y = 0.26;
-  app.truck.z = -0.25;
+  app.truck.z = -0.0;
   app.truck.x -= app.truck.speed;
 
   if (app.truck.x < -5.8) {
@@ -171,8 +177,6 @@ function updateTruck() {
 }
 
 function updatePointLights() {
-  console.log(app.lights.pointLights.length);
-  gl.uniform1i(app.programInfo.lightLocations.currentPointLightCount, app.lights.pointLights.length);
   for (var i = 0; i < app.lights.pointLights.length; i++){
     var intensity = app.lights.pointLights[i].intensity;
     if (app.dayTime > 7 && app.dayTime < 19.5){
@@ -182,6 +186,23 @@ function updatePointLights() {
     gl.uniform1f(pl.intensity, intensity);
     gl.uniform4f(pl.color, app.lights.pointLights[i].color[0], app.lights.pointLights[i].color[1], app.lights.pointLights[i].color[2], app.lights.pointLights[i].color[3]);
     gl.uniform3f(pl.position, app.lights.pointLights[i].position[0], app.lights.pointLights[i].position[1], app.lights.pointLights[i].position[2]);
+  }
+}
+
+function updateSpotLights() {
+  for (var i = 0; i < app.lights.spotLights.length; i++){
+    var intensity = app.lights.spotLights[i].intensity;
+    if (app.dayTime > 7 && app.dayTime < 19.5){
+      intensity = [0.0, 0.0, 0.0];
+    }
+    var pl = app.programInfo.lightLocations.spotLights[i];
+    var light = app.lights.spotLights[i];
+    gl.uniform3f(pl.intensity, intensity[0], intensity[1], intensity[2]);
+    gl.uniform4f(pl.color, light.color[0], light.color[1], light.color[2], light.color[3]);
+    gl.uniform3f(pl.position, light.position[0], light.position[1], light.position[2]);
+    gl.uniform3f(pl.direction, light.direction[0], light.direction[1], light.direction[2]);
+    gl.uniform1f(pl.exponent, light.exponent);
+    gl.uniform1f(pl.cutoff, light.cutoff);
   }
 }
 
