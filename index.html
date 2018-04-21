@@ -42,7 +42,7 @@
 
     struct SpotLightInfo {
       vec3 position;  // Position in eye coords.
-      vec3 intensity; // Amb., Diff., and Specular intensity
+      float intensity; // Amb., Diff., and Specular intensity
       vec3 direction; // Normalized direction of the spotlight
       float exponent; // Angular attenuation exponent
       float cutoff;   // Cutoff angle (between 0 and 90)
@@ -71,10 +71,10 @@
     uniform SpotLightInfo uSpotLights[spotLightCount];
 
     //Reflectividad
-    float Kd = 1.0; // Diffuse reflectivity
-    float Ka = 0.9; // Ambient reflectivity
+    float Kd = 0.7; // Diffuse reflectivity
+    float Ka = 0.2; // Ambient reflectivity
     float Ks = 0.9; // Specular reflectivity
-    float Shininess = 200.0;// Specular shininess factor
+    float Shininess = 180.0;// Specular shininess factor
 
 
     uniform mat4 uNormalMatrix;
@@ -87,36 +87,41 @@
 
     vec3 addPointLight(int index, vec4 eye_position, vec4 normal){
       float dist = distance(eye_position.xyz, uPointLights[index].position);
-      float ma = 4.0;
-
-      float att=1.0+-dist/ma;
-      vec3 s = normalize (uPointLights[index].position - eye_position.xyz);
-      vec3 v = normalize(-eye_position.xyz);
-      vec3 r = reflect( -s, normal.xyz );
-      float I = uPointLights[index].intensity;
-      return att * uPointLights[index].color.rgb * I * (Ka + 
-                  Kd * max(dot(s, normal.xyz), 0.0 ) + 
-                  Ks * pow(max(dot(r,v), 0.0), Shininess));
-      
+      float md =5.0;
+      float att=1.0-dist/md;
+      if (dist <= md){
+        vec3 s = normalize (uPointLights[index].position - eye_position.xyz);
+        vec3 v = normalize(-eye_position.xyz);
+        vec3 r = reflect( -s, normal.xyz );
+        float I = uPointLights[index].intensity;
+        return att * uPointLights[index].color.rgb * I * (
+                    Kd * max(dot(s, normal.xyz), 0.0 ) + 
+                    Ks * pow(max(dot(r,v), 0.0), Shininess));
+      }else{
+        return vec3(0.0,0.0,0.0);
+      }
     }
 
     vec3 addSpotLight(int index, vec4 eye_position, vec4 normal)
     {
-      vec3 s = normalize( uSpotLights[index].position - eye_position.xyz );
-      float angle = acos( dot(-s, uSpotLights[index].direction) );
-      float cutoff = radians( clamp( uSpotLights[index].cutoff, 0.0, 90.0 ) );
-      if( angle < cutoff ) {
-        float spotFactor = pow( dot(-s, uSpotLights[index].direction),
-                                uSpotLights[index].exponent );
-      vec3 v = normalize(vec3(-eye_position.xyz));
-      vec3 h = normalize( v + s );
-      return
-          spotFactor * uSpotLights[index].intensity *(
-            Kd * max( dot(s, normal.xyz), 0.0 ) +
-            Ks * pow(max(dot(h,normal.xyz), 0.0),Shininess));
-        } else {
-          return vec3(0.0, 0.0, 0.0);
-        } 
+      
+        vec3 s = normalize (uSpotLights[index].position - eye_position.xyz);
+        vec3 spotDir = normalize(uSpotLights[index].direction);
+        float angle = acos (dot(-s, spotDir));
+        float cutoff = radians ( clamp(uSpotLights[index].cutoff, 0.0, 90.0));
+        
+        if(angle < cutoff){
+          float spotFactor = pow( dot(-s, spotDir), uSpotLights[index].exponent );
+          vec3 v = normalize(vec3(-eye_position.xyz));
+          vec3 h = normalize( v + s );
+          float I = uSpotLights[index].intensity;
+          return   uSpotLights[index].color.rgb * spotFactor * I * (Ka +
+                      Kd * max(dot(s, normal.xyz), 0.0 ) + 
+                      Ks * pow(max(dot(h,normal.xyz), 0.0), Shininess));
+        }
+      else{
+        return vec3(0.0,0.0,0.0);
+      }
     }
     
     void main(void) {

@@ -9,6 +9,8 @@ var keyCodes = {
     s: 83,
     d: 68
 }
+
+var s = 10; //escala
 // Enums para el tipo de cámara seleccionada
 var FIRST = 0, THIRD = 1, LONGSHOT = 2;
 // gl context
@@ -74,4 +76,6 @@ app.times = 0;
 //función para dibujar la escena
 
 app.drawScene;
+
+
 

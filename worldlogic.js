@@ -29,9 +29,8 @@ function drawWorld() {
     aspect,
     app.zNear,
     app.zFar);
-
-
   
+  app.modelViewMatrix = mat4.create();
 
   mat4.translate(app.projectionMatrix,     // destination matrix
     app.projectionMatrix,     // matrix to translate
@@ -46,8 +45,6 @@ function drawWorld() {
     app.projectionMatrix,  // matrix to rotate
     app.camera.x,     // amount to rotate in radians
     [1, 0, 0]);       // axis to rotate around (X)
-
-  app.modelViewMatrix = mat4.create();
 
   //Reiniciamos el vector de luces puntuales
   //app.lights.pointLights = [];
@@ -102,32 +99,32 @@ function drawWorld() {
 
   mvPushMatrix();
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.8333, 0.26, -0.8]);  // amount to translate
-  drawStreetLight();
+  drawStreetLight([0,-1,0]);
   mvPopMatrix();
 
   mvPushMatrix();
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [5.5, 0.26, -0.8]);  // amount to translate
-  drawStreetLight();
+  drawStreetLight([0,-1,0]);
   mvPopMatrix();
 
   mvPushMatrix();
 
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [1.8333, 0.26, 0.8]);  // amount to translate
   mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(180), [0, 1, 0]);
-  drawStreetLight();
+  drawStreetLight([0,-1,0]);
   mvPopMatrix();
 
   mvPushMatrix();
 
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-5.5, 0.26, 0.8]);  // amount to translate
   mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(180), [0, 1, 0]);
-  drawStreetLight();
+  drawStreetLight([0,-1,0]);
   mvPopMatrix();
 
   updateTruck();
 
   updateDayTime();
-  app.dayTime = 24;
+  //app.dayTime = 24;
   updateAmbientalLight();
   updateDirectionalLightPosition();
   updatePointLights();
@@ -144,11 +141,7 @@ function updateDayTime(){
 function updateDirectionalLightPosition() {
   app.lights.directionalLight.direction = [0,
   3 * Math.sin(degToRad(15*app.dayTime - 90)),
-  3 * Math.cos(degToRad(15*app.dayTime - 90))]
-  if(app.dayTime > 5 && app.dayTime < 20)
-    app.lights.directionalLight.intensity = 1.0;
-  else
-    app.lights.directionalLight.intensity = 0.0;
+  3 * Math.cos(degToRad(15*app.dayTime - 90))];
 }
 
 function updateAmbientalLight(){
@@ -194,11 +187,11 @@ function updateSpotLights() {
   for (var i = 0; i < app.lights.spotLights.length; i++){
     var intensity = app.lights.spotLights[i].intensity;
     if (app.dayTime > 7 && app.dayTime < 19.5){
-      intensity = [0.0, 0.0, 0.0];
+      intensity = 0.0;
     }
     var pl = app.programInfo.lightLocations.spotLights[i];
     var light = app.lights.spotLights[i];
-    gl.uniform3f(pl.intensity, intensity[0], intensity[1], intensity[2]);
+    gl.uniform1f(pl.intensity, intensity);
     gl.uniform4f(pl.color, light.color[0], light.color[1], light.color[2], light.color[3]);
     gl.uniform3f(pl.position, light.position[0], light.position[1], light.position[2]);
     gl.uniform3f(pl.direction, light.direction[0], light.direction[1], light.direction[2]);
