@@ -150,3 +150,17 @@ function getNormalVector(p1, p2, p3) {
   vec3.normalize(n, n);
   return n;
 }
+
+function calculateIntermediateColors( startTime, endTime, startColor, endColor, parts){
+  var mr = (endColor[0] - startColor[0])/(endTime - startTime);
+  var r = mr*(app.dayTime - startTime) + startColor[0];
+
+  var mg = (endColor[1] - startColor[1])/(endTime - startTime);
+  var g = mg*(app.dayTime - startTime) + startColor[1];
+
+  var mb = (endColor[2] - startColor[2])/(endTime - startTime);
+  var b = mb*(app.dayTime - startTime) + startColor[2];
+
+  return [r,g,b];
+
+}

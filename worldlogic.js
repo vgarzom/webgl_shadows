@@ -146,11 +146,11 @@ function updateDirectionalLightPosition() {
 
 function updateAmbientalLight(){
   if (app.dayTime > 0 && app.dayTime <= 7){
-    app.lights.ambientLight = [0.0, 0.1, 0.5];
+    app.lights.ambientLight = calculateIntermediateColors( 0, 7, [0.0, 0.1, 0.5], [0.1, 0.1, 0.1]);
   }else if (app.dayTime > 7 && app.dayTime <= 16.5){
-    app.lights.ambientLight = [0.5, 0.5, 0.5];
+    app.lights.ambientLight = calculateIntermediateColors (7, 16.5, [0.1, 0.1, 0.1], [221/255, 152/255, 58/255]);
   }else if (app.dayTime > 16.7 && app.dayTime <= 19){
-    app.lights.ambientLight = [221/255, 152/255, 58/255];
+    app.lights.ambientLight = calculateIntermediateColors (16.5, 19, [221/255, 152/255, 58/255],[0.0, 0.1, 0.5]) ;
   }else if (app.dayTime > 19 && app.dayTime <= 24){
     app.lights.ambientLight = [0.0, 0.1, 0.5];
   }

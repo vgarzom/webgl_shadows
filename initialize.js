@@ -98,7 +98,7 @@ function initProgramInfo() {
     );
   }
 
-  for (var i = 0; i < 4; i++){
+  for (var i = 0; i < 6; i++){
     app.programInfo.lightLocations.spotLights.push(
       {
         intensity: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].intensity'),

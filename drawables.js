@@ -100,9 +100,7 @@ function drawStreetLight(lightDirection) {
     drawElement(app.buffers.cube, null, false, [65 / 255.0, 156 / 255.0, 200 / 255.0, 1.0]);
     var worldPosition = vec3.create();
     mat4.getTranslation(worldPosition, app.modelViewMatrix);
-    var worldRotation = vec3.create();
-    mat4.getRotation(worldRotation, app.modelViewMatrix);
-    if (app.lights.spotLights.length < 4) {
+    if (app.lights.spotLights.length < 6) {
         app.lights.spotLights.push({
             intensity: 1.0,
             color: [1.0, 1.0, 1.0, 1.0],
@@ -458,5 +456,45 @@ function drawTruck() {
     mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(90), [1, 0, 0]);
     drawElement(app.buffers.cyl, null, false, [61 / 255, 61 / 255, 61 / 255, 1.0]);
     mvPopMatrix();
+    mvPushMatrix();
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.4, -0.4, 0.1]);
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.05, 0.05, 0.05]);
+    drawElement(app.buffers.sphere, null, false, [1.0, 1.0, 1.0, 0.2]);
+    var worldPosition = vec3.create();
+    mat4.getTranslation(worldPosition, app.modelViewMatrix);
+    if (app.lights.spotLights.length < 6) {
+        console.log("Adding truck  1 light");
+        app.lights.spotLights.push({
+            intensity: 1.0,
+            color: [1.0, 1.0, 1.0, 1.0],
+            position: worldPosition,
+            direction: [1.0,-1.0,1.0],
+            exponent: 15.0,
+            cutoff: 45.0
+        });
+    }
+   
     mvPopMatrix();
+    mvPushMatrix();
+    mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.4, -0.4, -0.1]);
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.05, 0.05, 0.05]);
+    drawElement(app.buffers.sphere, null, false, [1.0, 1.0, 1.0, 0.2]);
+    var worldPosition = vec3.create();
+    mat4.getTranslation(worldPosition, app.modelViewMatrix);
+    if (app.lights.spotLights.length < 6) {
+        console.log("Adding truck  2 light");
+        app.lights.spotLights.push({
+            intensity: 10.0,
+            color: [1.0, 1.0, 1.0, 1.0],
+            position: worldPosition,
+            direction: [0.0,-1.0,-1.0],
+            exponent: 2.0,
+            cutoff: 90.0
+        });
+    }
+   
+    mvPopMatrix();
+    mvPopMatrix();
+
+   
 }
