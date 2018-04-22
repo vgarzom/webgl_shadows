@@ -99,26 +99,26 @@ function drawWorld() {
 
   mvPushMatrix();
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.8333, 0.26, -0.8]);  // amount to translate
-  drawStreetLight([0,-1,0]);
+  drawStreetLight([0,-1,0.3]);
   mvPopMatrix();
 
   mvPushMatrix();
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [5.5, 0.26, -0.8]);  // amount to translate
-  drawStreetLight([0,-1,0]);
+  drawStreetLight([0,-1,0.3]);
   mvPopMatrix();
 
   mvPushMatrix();
 
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [1.8333, 0.26, 0.8]);  // amount to translate
   mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(180), [0, 1, 0]);
-  drawStreetLight([0,-1,0]);
+  drawStreetLight([0,-1,-0.3]);
   mvPopMatrix();
 
   mvPushMatrix();
 
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-5.5, 0.26, 0.8]);  // amount to translate
   mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(180), [0, 1, 0]);
-  drawStreetLight([0,-1,0]);
+  drawStreetLight([0,-1,-0.3]);
   mvPopMatrix();
 
   updateTruck();

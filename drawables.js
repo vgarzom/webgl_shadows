@@ -108,8 +108,8 @@ function drawStreetLight(lightDirection) {
             color: [1.0, 1.0, 1.0, 1.0],
             position: worldPosition,
             direction: lightDirection,
-            exponent: 30.0,
-            cutoff: 10.0
+            exponent: 15.0,
+            cutoff: 45.0
         });
     }
     mvPopMatrix();
