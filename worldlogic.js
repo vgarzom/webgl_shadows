@@ -57,6 +57,11 @@ function drawWorld() {
   
   app.normalMatrix = mat4.create();
 
+  mvPushMatrix();
+  mat4.translate(app.modelViewMatrix, app.modelViewMatrix, app.lights.directionalLight.direction);  // amount to translate
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.5, 0.5, 0.5]);
+  drawElement(app.buffers.sphere, app.texture.bricks, false, app.lights.ambientLight);
+  mvPopMatrix();
   //Dibuamos el cubo de base
   mvPushMatrix();
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.0, 0.0, 0.0]);  // amount to translate
@@ -140,17 +145,17 @@ function updateDayTime(){
 
 function updateDirectionalLightPosition() {
   app.lights.directionalLight.direction = [0,
-  3 * Math.sin(degToRad(15*app.dayTime - 90)),
-  3 * Math.cos(degToRad(15*app.dayTime - 90))];
+  5 * Math.sin(degToRad(15*app.dayTime - 90)),
+  5 * Math.cos(degToRad(15*app.dayTime - 90))];
 }
 
 function updateAmbientalLight(){
   if (app.dayTime > 0 && app.dayTime <= 7){
     app.lights.ambientLight = calculateIntermediateColors( 0, 7, [0.0, 0.1, 0.5], [0.1, 0.1, 0.1]);
   }else if (app.dayTime > 7 && app.dayTime <= 16.5){
-    app.lights.ambientLight = calculateIntermediateColors (7, 16.5, [0.1, 0.1, 0.1], [221/255, 152/255, 58/255]);
+    app.lights.ambientLight = calculateIntermediateColors (7, 16.5, [0.1, 0.1, 0.1], [130/255, 112/255, 35/255]);
   }else if (app.dayTime > 16.7 && app.dayTime <= 19){
-    app.lights.ambientLight = calculateIntermediateColors (16.5, 19, [221/255, 152/255, 58/255],[0.0, 0.1, 0.5]) ;
+    app.lights.ambientLight = calculateIntermediateColors (16.5, 19, [130/255, 112/255, 35/255],[0.0, 0.1, 0.5]) ;
   }else if (app.dayTime > 19 && app.dayTime <= 24){
     app.lights.ambientLight = [0.0, 0.1, 0.5];
   }
