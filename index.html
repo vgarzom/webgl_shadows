@@ -8,7 +8,25 @@
   <script type="text/javascript" src="libs/bezier.js"></script>
   <script type="text/javascript" src="libs/gl-matrix.js"></script>
   <script type="text/javascript" src="libs/webgl-utils.js"></script>
+  <!-- Shadow Shader-->
+  <script id="shadow-shader-fs" type="x-shader/x-fragment">
+    #ifdef GL_ES
+    precision mediump float;
+    #endif
+    
+    void main() {
+      gl_FragColor = vec4(gl_FragCoord.z, 0.0, 0.0, 0.0); // Write the z-value in R
+    }
+  </script>
 
+  <script id="shadow-shader-vs" type="x-shader/x-fragment">
+    attribute vec4 a_Position;
+    uniform mat4 u_MvpMatrix;
+    
+    void main() {
+      gl_Position = u_MvpMatrix * a_Position;
+    }
+  </script>
   <!-- Main Shader -->
 
   <script id="shader-fs" type="x-shader/x-fragment">
@@ -53,8 +71,6 @@
     highp float Ka = 0.2; // Ambient reflectivity
     highp float Ks = 0.9; // Specular reflectivity
     highp float Shininess = 180.0;// Specular shininess factor
-
-
 
     highp vec3 addPointLight(LightInfo pointLight){
         highp float dist = distance(vPosition.xyz, pointLight.position);
@@ -164,7 +180,6 @@
       highp float directional = max(dot(vNormal.xyz, directionalVector), 0.0);
       vPosition = uModelViewMatrix * aVertexPosition;
       vLighting = uAmbientLight + (uDirectionalLight.intensity * uDirectionalLight.color.rgb * directional);
-      
       
     }
   </script>

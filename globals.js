@@ -1,6 +1,6 @@
 
 // globals
-
+var texturesBaseUrl = "textures/";
 // Enums
 var X = 0, Y = 1, Z = 2, H = 3, P = 4;
 var keyCodes = {
