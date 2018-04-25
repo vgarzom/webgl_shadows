@@ -20,8 +20,14 @@ var canvas;
 // application var holder
 var app = {};
 app.dayTime = 0.0;
+
+//Normal shaders and program info
 app.shaderProgram = {};
 app.programInfo = {};
+//Shadow shaders an program info
+app.shadowShaderProgram = {};
+app.shadowProgramInfo = {};
+
 app.buffers = {};
 app.texture = {};
 app.modelViewMatrix = mat4.create();

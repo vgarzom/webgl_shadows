@@ -44,6 +44,7 @@ function getShader(gl, id) {
 }
 
 function initShaders() {
+  //Iniciamos el programa de shaders para el dibujado normal
   var fragmentShader = getShader(gl, "shader-fs");
   var vertexShader = getShader(gl, "shader-vs");
 
@@ -53,11 +54,10 @@ function initShaders() {
   gl.linkProgram(app.shaderProgram);
 
   if (!gl.getProgramParameter(app.shaderProgram, gl.LINK_STATUS)) {
-    alert("Could not initialise shaders");
+    alert("Could not initialise normal shaders");
   }
 
   gl.useProgram(app.shaderProgram);
-
 }
 
 function initProgramInfo() {
@@ -88,33 +88,33 @@ function initProgramInfo() {
     }
   };
 
-  for (var i = 0; i < 3; i++){
+  for (var i = 0; i < 3; i++) {
     app.programInfo.lightLocations.pointLights.push(
       {
-        intensity: gl.getUniformLocation(app.shaderProgram, 'uPointLights['+i+'].intensity'),
-        color: gl.getUniformLocation(app.shaderProgram, 'uPointLights['+i+'].color'),
-        position: gl.getUniformLocation(app.shaderProgram, 'uPointLights['+i+'].position'),
+        intensity: gl.getUniformLocation(app.shaderProgram, 'uPointLights[' + i + '].intensity'),
+        color: gl.getUniformLocation(app.shaderProgram, 'uPointLights[' + i + '].color'),
+        position: gl.getUniformLocation(app.shaderProgram, 'uPointLights[' + i + '].position'),
       }
     );
   }
 
-  for (var i = 0; i < 6; i++){
+  for (var i = 0; i < 6; i++) {
     app.programInfo.lightLocations.spotLights.push(
       {
-        intensity: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].intensity'),
-        color: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].color'),
-        position: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].position'),
-        direction: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].direction'),
-        exponent: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].exponent'),
-        cutoff: gl.getUniformLocation(app.shaderProgram, 'uSpotLights['+i+'].cutoff')
+        intensity: gl.getUniformLocation(app.shaderProgram, 'uSpotLights[' + i + '].intensity'),
+        color: gl.getUniformLocation(app.shaderProgram, 'uSpotLights[' + i + '].color'),
+        position: gl.getUniformLocation(app.shaderProgram, 'uSpotLights[' + i + '].position'),
+        direction: gl.getUniformLocation(app.shaderProgram, 'uSpotLights[' + i + '].direction'),
+        exponent: gl.getUniformLocation(app.shaderProgram, 'uSpotLights[' + i + '].exponent'),
+        cutoff: gl.getUniformLocation(app.shaderProgram, 'uSpotLights[' + i + '].cutoff')
       }
     );
   }
 }
 
-function initTexture( url) {
+function initTexture(url) {
   const object = {};
-  
+
   object.texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, object.texture);
 
@@ -132,27 +132,27 @@ function initTexture( url) {
   const srcType = gl.UNSIGNED_BYTE;
   const pixel = new Uint8Array([0, 0, 255, 255]);  // opaque blue
   gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
-                width, height, border, srcFormat, srcType,
-                pixel);
+    width, height, border, srcFormat, srcType,
+    pixel);
 
   object.texture.image = new Image();
-  object.texture.image.onload = function() {
+  object.texture.image.onload = function () {
     gl.bindTexture(gl.TEXTURE_2D, object.texture);
     gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
-                  srcFormat, srcType, object.texture.image);
+      srcFormat, srcType, object.texture.image);
 
     // WebGL1 has different requirements for power of 2 images
     // vs non power of 2 images so check if the image is a
     // power of 2 in both dimensions.
     if (isPowerOf2(object.texture.image.width) && isPowerOf2(object.texture.image.height)) {
-       // Yes, it's a power of 2. Generate mips.
-       gl.generateMipmap(gl.TEXTURE_2D);
+      // Yes, it's a power of 2. Generate mips.
+      gl.generateMipmap(gl.TEXTURE_2D);
     } else {
-       // No, it's not a power of 2. Turn of mips and set
-       // wrapping to clamp to edge
-       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      // No, it's not a power of 2. Turn of mips and set
+      // wrapping to clamp to edge
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     }
   };
   object.texture.image.crossOrigin = "";
@@ -160,12 +160,12 @@ function initTexture( url) {
   return object;
 }
 
-function initTextures(){
-  app.texture.police = initTexture( texturesBaseUrl + "police_building.png" );
-  app.texture.restaurant = initTexture( texturesBaseUrl + "rest_texture.png" );
-  app.texture.hospital = initTexture( texturesBaseUrl + "hospital_texture.png" );
-  app.texture.radiostation = initTexture( texturesBaseUrl + "radiostation_texture.png" );
-  app.texture.gas_machine = initTexture( texturesBaseUrl + "gas_machine_texture.png" );
+function initTextures() {
+  app.texture.police = initTexture(texturesBaseUrl + "police_building.png");
+  app.texture.restaurant = initTexture(texturesBaseUrl + "rest_texture.png");
+  app.texture.hospital = initTexture(texturesBaseUrl + "hospital_texture.png");
+  app.texture.radiostation = initTexture(texturesBaseUrl + "radiostation_texture.png");
+  app.texture.gas_machine = initTexture(texturesBaseUrl + "gas_machine_texture.png");
 }
 
 function initBuffers() {

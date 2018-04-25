@@ -9,8 +9,13 @@ function render(now) {
 function webGLStart() {
   canvas = document.getElementById("mycanvas");
   initGL(canvas);
+  //Inicializamos los shaders
+  initShadowShaders();
   initShaders();
+  //Inicializamos ambos programas, tanto para los shadows como para dibujar normal
+  initShadowProgramInfo();
   initProgramInfo();
+
   initBuffers();
   initTextures();
   initInterfaceListeners();
