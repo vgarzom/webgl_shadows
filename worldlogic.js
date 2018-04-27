@@ -93,7 +93,7 @@ mat4.ortho(app.depthShadow.mvpMatrix,
   //---------------------------------------------------------------------------
   updateTruck();
   updateDayTime();
-  app.dayTime = 8.5;
+  //app.dayTime = 8.5;
   updateAmbientalLight();
   updateDirectionalLightPosition();
   updatePointLights();
