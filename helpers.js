@@ -18,11 +18,65 @@ function Array2Buffer(array, iSize, nSize) {
 }
 
 function drawElement(buffer, textureobj, hasTexture, bodyColor = [1.0, 1.0, 1.0]) {
+  if (app.depthShadow.drawingShadows) {
+    drawShadowElement(buffer);
+  } else {
+    drawElementNormal(buffer, textureobj, hasTexture, bodyColor);
+  }
+}
+
+function drawShadowElement(buffer) {
+  {
+    const numComponents = 3;
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer.position);
+    gl.vertexAttribPointer(
+      app.shadowProgramInfo.attribLocations.position,
+      numComponents,
+      type,
+      normalize,
+      stride,
+      offset);
+    gl.enableVertexAttribArray(
+      app.shadowProgramInfo.attribLocations.position);
+  }
+
+  // Tell WebGL which indices to use to index the vertices
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer.indices);
+
+  // Tell WebGL to use our program when drawing
+
+  gl.useProgram(app.shadowProgramInfo.program);
+
+  // Set the shader uniforms
+
+  gl.uniformMatrix4fv(
+    app.shadowProgramInfo.uniformLocations.mvpMatrix,
+    false,
+    app.modelViewMatrix);
+
+  gl.uniformMatrix4fv(
+    app.shadowProgramInfo.uniformLocations.projectionMatrix,
+    false,
+    app.depthShadow.mvpMatrix);
+
+  {
+    const vertexCount = buffer.vertexCount;
+    const type = gl.UNSIGNED_SHORT;
+    const offset = 0;
+    gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+  }
+}
+
+function drawElementNormal(buffer, textureobj, hasTexture, bodyColor = [1.0, 1.0, 1.0]) {
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute
 
   mat4.transpose(app.normalMatrix, mat4.invert(app.normalMatrix, app.modelViewMatrix));
-  
+
   {
     const numComponents = 3;
     const type = gl.FLOAT;
@@ -100,6 +154,12 @@ function drawElement(buffer, textureobj, hasTexture, bodyColor = [1.0, 1.0, 1.0]
     app.programInfo.uniformLocations.normalMatrix,
     false,
     app.normalMatrix);
+
+  gl.uniformMatrix4fv(
+    app.programInfo.uniformLocations.mvpMatrixFromLight,
+    false,
+    app.depthShadow.mvpMatrix);
+
   gl.uniform1i(app.programInfo.uniformLocations.hasTexture, hasTexture);
   gl.uniform4f(app.programInfo.uniformLocations.bodyColor, bodyColor[0], bodyColor[1], bodyColor[2], bodyColor[3]);
 
@@ -114,6 +174,12 @@ function drawElement(buffer, textureobj, hasTexture, bodyColor = [1.0, 1.0, 1.0]
   }
   // Tell the shader we bound the texture to texture unit 0
   gl.uniform1i(app.programInfo.uniformLocations.uSampler, 0);
+
+
+  //Fijamos la textura de sombras
+  gl.activeTexture(gl.TEXTURE1);
+  gl.bindTexture(gl.TEXTURE_2D, app.depthShadow.fbo.texture);
+  gl.uniform1i(app.programInfo.uniformLocations.shadowSampler, 1);
 
   {
     const vertexCount = buffer.vertexCount;
@@ -151,16 +217,35 @@ function getNormalVector(p1, p2, p3) {
   return n;
 }
 
-function calculateIntermediateColors( startTime, endTime, startColor, endColor, parts){
-  var mr = (endColor[0] - startColor[0])/(endTime - startTime);
-  var r = mr*(app.dayTime - startTime) + startColor[0];
+function calculateIntermediateColors(startTime, endTime, startColor, endColor, parts) {
+  var mr = (endColor[0] - startColor[0]) / (endTime - startTime);
+  var r = mr * (app.dayTime - startTime) + startColor[0];
 
-  var mg = (endColor[1] - startColor[1])/(endTime - startTime);
-  var g = mg*(app.dayTime - startTime) + startColor[1];
+  var mg = (endColor[1] - startColor[1]) / (endTime - startTime);
+  var g = mg * (app.dayTime - startTime) + startColor[1];
 
-  var mb = (endColor[2] - startColor[2])/(endTime - startTime);
-  var b = mb*(app.dayTime - startTime) + startColor[2];
+  var mb = (endColor[2] - startColor[2]) / (endTime - startTime);
+  var b = mb * (app.dayTime - startTime) + startColor[2];
 
-  return [r,g,b];
+  return [r, g, b];
 
 }
+
+function setDataForDrawingShadows(){
+  app.depthShadow.drawingShadows = true;
+  gl.bindFramebuffer(gl.FRAMEBUFFER, app.depthShadow.fbo);               // Change the drawing destination to FBO
+  gl.viewport(0, 0, OFFSCREEN_HEIGHT, OFFSCREEN_HEIGHT); // Set view port for FBO
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);   // Clear FBO    
+
+  gl.useProgram(app.shadowShaderProgram); // Set shaders for generating a shadow map
+}
+
+function setDataForDrawingColors(){
+  app.depthShadow.drawingShadows = false;
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);               // Change the drawing destination to color buffer
+  gl.viewport(0, 0, gl.canvas.clientWidth, gl.canvas.clientHeight);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);    // Clear color and depth buffer
+
+  gl.useProgram(app.shaderProgram); // Set the shader for regular drawing
+}
+

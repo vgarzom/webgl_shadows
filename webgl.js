@@ -7,6 +7,9 @@ function render(now) {
 }
 
 function webGLStart() {
+  //Indicamos donde se encuentran las texturas
+  texturesBaseUrl = "textures/";
+  //
   canvas = document.getElementById("mycanvas");
   initGL(canvas);
   //Inicializamos los shaders
@@ -15,6 +18,9 @@ function webGLStart() {
   //Inicializamos ambos programas, tanto para los shadows como para dibujar normal
   initShadowProgramInfo();
   initProgramInfo();
+
+  //Inicializamos el framebuffer para la carga de la textura de sombras
+  app.depthShadow.fbo = initFramebufferObject();
 
   initBuffers();
   initTextures();

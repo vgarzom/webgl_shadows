@@ -2,6 +2,7 @@
 // globals
 var texturesBaseUrl = "textures/";
 // Enums
+var OFFSCREEN_WIDTH = 2048, OFFSCREEN_HEIGHT = 2048;
 var X = 0, Y = 1, Z = 2, H = 3, P = 4;
 var keyCodes = {
     a: 65,
@@ -54,6 +55,8 @@ app.camera = {
     z: 0
 };
 
+app.camera.zoom = 15.0;
+
 app.truck = {
     x: 0,
     y: 0,
@@ -79,8 +82,13 @@ app.lights = {
 }
 
 app.times = 0;
-//función para dibujar la escena
 
+app.depthShadow = {
+    fbo: {},
+    mvpMatrix: mat4.create(),
+    drawingShadows: false
+}
+//función para dibujar la escena
 app.drawScene;
 
 

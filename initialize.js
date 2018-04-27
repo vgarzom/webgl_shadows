@@ -74,7 +74,9 @@ function initProgramInfo() {
       normalMatrix: gl.getUniformLocation(app.shaderProgram, 'uNormalMatrix'),
       uSampler: gl.getUniformLocation(app.shaderProgram, 'uSampler'),
       hasTexture: gl.getUniformLocation(app.shaderProgram, 'uHasTexture'),
-      bodyColor: gl.getUniformLocation(app.shaderProgram, 'uBodyColor')
+      bodyColor: gl.getUniformLocation(app.shaderProgram, 'uBodyColor'),
+      shadowSampler: gl.getUniformLocation(app.shaderProgram, 'u_ShadowMap'),
+      mvpMatrixFromLight: gl.getUniformLocation(app.shaderProgram, 'u_MvpMatrixFromLight')
     },
     lightLocations: {
       directionalLight: {
