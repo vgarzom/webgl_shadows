@@ -41,7 +41,7 @@ app.zFar = 100.0;
 app.deltaTime = 0;
 app.then = 0;
 app.walkspeed = 0.1;
-
+app.animate = false;
 app.sliders = {};
 
 app.positions = {
@@ -85,7 +85,7 @@ app.times = 0;
 
 app.depthShadow = {
     fbo: {},
-    mvpMatrix: mat4.create(),
+    sProjectionMatrix: mat4.create(),
     drawingShadows: false
 }
 //función para dibujar la escena

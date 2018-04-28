@@ -11,6 +11,8 @@ function initInterfaceListeners() {
         app.camera.heading = 0;
         window.alert('Con la cámara Long-shotgit puedes modificar la curva arrastrando los puntos de control (Esferas mas grandes) con el mouse')
     };*/
+    var checkBox = document.getElementById("animateCheck");
+    app.animate = checkBox.checked;
 
     document.addEventListener('keydown', function (event) {
         // if(lastDownTarget == canvas) {
@@ -54,4 +56,9 @@ function initInterfaceListeners() {
     document.addEventListener("mouseup", function (event) {
         app.ismousedown = false;
     });
+}
+
+function enableAnimation(){
+    var checkBox = document.getElementById("animateCheck");
+    app.animate = checkBox.checked;
 }

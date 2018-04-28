@@ -27,9 +27,9 @@ function drawWorld() {
     app.zNear,
     app.zFar);
 */
-mat4.ortho(app.depthShadow.mvpMatrix,
--20,20,-20,20, app.zNear, app.zFar);
-    //mat4.lookAt(app.depthShadow.mvpMatrix, app.lights.directionalLight.direction, [0.0, 0.0, 0.0], [0.0, 1.0, 0.0]);
+  mat4.ortho(app.depthShadow.mvpMatrix,
+    -20, 20, -20, 20, app.zNear, app.zFar);
+  //mat4.lookAt(app.depthShadow.mvpMatrix, app.lights.directionalLight.direction, [0.0, 0.0, 0.0], [0.0, 1.0, 0.0]);
 
   mat4.translate(app.depthShadow.mvpMatrix,     // destination matrix
     app.depthShadow.mvpMatrix,     // matrix to translate
@@ -80,10 +80,10 @@ mat4.ortho(app.depthShadow.mvpMatrix,
   drawWorldObjects();
 
   setDataForDrawingColors()
-  
+
   mvPushMatrix();
   var sposition = app.lights.directionalLight.direction;
-  sposition = [app.camera.zoom * 0.75 * sposition[0], app.camera.zoom * 0.75* sposition[1], app.camera.zoom *0.75* sposition[2]];
+  sposition = [app.camera.zoom * 0.75 * sposition[0], app.camera.zoom * 0.75 * sposition[1], app.camera.zoom * 0.75 * sposition[2]];
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, sposition);  // amount to translate
   mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.5, 0.5, 0.5]);
   drawElement(app.buffers.sphere, app.texture.bricks, false, app.lights.ambientLight);
@@ -101,9 +101,11 @@ mat4.ortho(app.depthShadow.mvpMatrix,
 }
 
 function updateDayTime() {
-  app.dayTime += 0.5*app.deltaTime;
-  if (app.dayTime >= 24) {
-    app.dayTime = 0;
+  if (app.animate) {
+    app.dayTime += app.deltaTime;
+    if (app.dayTime >= 24) {
+      app.dayTime = 0;
+    }
   }
 }
 
