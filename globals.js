@@ -55,7 +55,7 @@ app.camera = {
     z: 0
 };
 
-app.camera.zoom = 15.0;
+app.camera.zoom = 7500.0;
 
 app.truck = {
     x: 0,
@@ -88,6 +88,8 @@ app.depthShadow = {
     sProjectionMatrix: mat4.create(),
     drawingShadows: false
 }
+
+app.interface = {};
 //función para dibujar la escena
 app.drawScene;
 

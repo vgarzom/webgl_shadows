@@ -13,22 +13,22 @@ function drawWorld() {
   // as the destination to receive the result.
   app.fieldOfView = degToRad(45);
   app.zNear = 1.0;
-  app.zFar = 100.0;
+  app.zFar = 100000.0;
 
 
   app.modelViewMatrix = mat4.create();
   //--------------------------------------------------------------------------------
   //Preparamos la matriz de proyección para genearar el mapa de sombras
   app.depthShadow.mvpMatrix = mat4.create();
-  /*
+  
   mat4.perspective(app.depthShadow.mvpMatrix,
     app.fieldOfView,
     OFFSCREEN_WIDTH / OFFSCREEN_HEIGHT,
     app.zNear,
     app.zFar);
-*/
-  mat4.ortho(app.depthShadow.mvpMatrix,
-    -20, 20, -20, 20, app.zNear, app.zFar);
+
+  /*mat4.ortho(app.depthShadow.mvpMatrix,
+    -200, 200, -200, 200, app.zNear, app.zFar);*/
   //mat4.lookAt(app.depthShadow.mvpMatrix, app.lights.directionalLight.direction, [0.0, 0.0, 0.0], [0.0, 1.0, 0.0]);
 
   mat4.translate(app.depthShadow.mvpMatrix,     // destination matrix
@@ -37,7 +37,7 @@ function drawWorld() {
 
   mat4.rotate(app.depthShadow.mvpMatrix,  // destination matrix
     app.depthShadow.mvpMatrix,  // matrix to rotate
-    degToRad(app.camera.zoom * app.dayTime - 90),     // amount to rotate in radians
+    degToRad(15 * app.dayTime - 90),     // amount to rotate in radians
     [1, 0, 0]);       // axis to rotate around (X)
 
   //--------------------------------------------------------------------------------
@@ -76,20 +76,25 @@ function drawWorld() {
 
   app.normalMatrix = mat4.create();
 
+  mvPushMatrix();
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [500,500,500]);
+
   setDataForDrawingShadows();
   drawWorldObjects();
 
-  setDataForDrawingColors()
+  setDataForDrawingColors();
+  drawWorldObjects();
+
+ 
+  mvPopMatrix();
 
   mvPushMatrix();
   var sposition = app.lights.directionalLight.direction;
-  sposition = [app.camera.zoom * 0.75 * sposition[0], app.camera.zoom * 0.75 * sposition[1], app.camera.zoom * 0.75 * sposition[2]];
+  sposition = [app.camera.zoom * 0.5 * sposition[0], app.camera.zoom * 0.5 * sposition[1], app.camera.zoom * 0.5 * sposition[2]];
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, sposition);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [0.5, 0.5, 0.5]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [10, 10, 10]);
   drawElement(app.buffers.sphere, app.texture.bricks, false, app.lights.ambientLight);
   mvPopMatrix();
-
-  drawWorldObjects();
   //---------------------------------------------------------------------------
   updateTruck();
   updateDayTime();
@@ -102,17 +107,18 @@ function drawWorld() {
 
 function updateDayTime() {
   if (app.animate) {
-    app.dayTime += app.deltaTime;
+    app.dayTime += 0.5*app.deltaTime;
     if (app.dayTime >= 24) {
       app.dayTime = 0;
     }
+    app.interface.timeSpan.innerHTML = "Hora: "+app.dayTime;
   }
 }
 
 function updateDirectionalLightPosition() {
   app.lights.directionalLight.direction = [0,
-    Math.sin(degToRad(app.camera.zoom * app.dayTime - 90)),
-    Math.cos(degToRad(app.camera.zoom * app.dayTime - 90))];
+    Math.sin(degToRad(15 * app.dayTime - 90)),
+    Math.cos(degToRad(15 * app.dayTime - 90))];
 }
 
 function updateAmbientalLight() {

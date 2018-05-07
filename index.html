@@ -24,9 +24,9 @@
     varying highp float distance;
     
     void main() {
-      
+
       vec4 cs_position = normalize(uProjectionMatrix * u_MvpMatrix * a_Position);
-      distance = 0.5*cs_position.z +0.5;
+      distance = cs_position.z;
       gl_Position = uProjectionMatrix * u_MvpMatrix * a_Position;
     }
   </script>
@@ -118,10 +118,12 @@
 
     void main(void) {
       // Shadow
-      highp vec3 shadowCoord =(v_PositionFromLight.xyz/v_PositionFromLight.w)/ 2.0 + 0.5;
-      highp vec4 rgbaDepth = texture2D(u_ShadowMap, shadowCoord.xy);
-      highp float depth = rgbaDepth.r;
-      highp float shadow = depth;
+      highp vec3 shadowCoord =(v_PositionFromLight.xyz/v_PositionFromLight.w)*0.5 + 0.5;
+   highp vec4 vpfln = normalize(v_PositionFromLight);
+   highp vec4 rgbaDepth = texture2D(u_ShadowMap, shadowCoord.xy);
+   highp float depth = rgbaDepth.r;
+   highp float current_depth = vpfln.z;
+   highp float shadow = current_depth > depth + 0.025 ? 1.0 : 0.5;
       
       // Point Light
       highp vec3 lighting = vLighting * shadow;
@@ -217,6 +219,8 @@
   <div style="background: white">
     <p>Click y mueve el mouse para mover la camara</p>
     <input type="checkbox" id="animateCheck" onclick="enableAnimation()">Animar hora</input>
+    <br />
+    <span id="timeSpan">Hora: </span>
   </div>
   <canvas id="mycanvas" style="border: solid 1px;" width="500" height="500"></canvas>
   <br />

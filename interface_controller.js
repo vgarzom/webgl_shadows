@@ -11,6 +11,7 @@ function initInterfaceListeners() {
         app.camera.heading = 0;
         window.alert('Con la cámara Long-shotgit puedes modificar la curva arrastrando los puntos de control (Esferas mas grandes) con el mouse')
     };*/
+    app.interface.timeSpan = document.getElementById("timeSpan");
     var checkBox = document.getElementById("animateCheck");
     app.animate = checkBox.checked;
 
