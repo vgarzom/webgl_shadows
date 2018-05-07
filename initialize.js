@@ -168,6 +168,7 @@ function initTextures() {
   app.texture.hospital = initTexture(texturesBaseUrl + "hospital_texture.png");
   app.texture.radiostation = initTexture(texturesBaseUrl + "radiostation_texture.png");
   app.texture.gas_machine = initTexture(texturesBaseUrl + "gas_machine_texture.png");
+  app.texture.floor = initTexture(texturesBaseUrl + "floor.png");
 }
 
 function initBuffers() {

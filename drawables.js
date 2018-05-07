@@ -179,11 +179,11 @@ function drawStreet() {
 }
 
 function drawGasStation() {
-    mvPushMatrix()
-    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [4.7589, 0.02, 2.564]);
+    /*mvPushMatrix()
+    mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [4.7589, 0.01, 2.564]);
     drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
     mvPopMatrix();
-
+*/
     mvPushMatrix(); //Dibujo del edificio
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [1.2248, 0.51, -0.0066]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.3146, 1, 1.6338]);
@@ -261,11 +261,11 @@ function drawGasStation() {
 }
 
 function drawHospital() {
-    mvPushMatrix()
+    /*mvPushMatrix()
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [3.255, 0.02, 2.564]);
     drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
     mvPopMatrix();
-
+*/
     mvPushMatrix(); //Dibujo del edificio
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.3639, 0.86, -0.2213]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.6679, 1.7, 1.4203]);
@@ -296,11 +296,11 @@ function drawHospital() {
 }
 
 function drawRadioStation() {
-    mvPushMatrix()
+    /*mvPushMatrix()
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [2.3795, 0.02, 2.564]);
     drawElement(app.buffers.cube, app.texture.bricks, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
     mvPopMatrix();
-
+*/
     mvPushMatrix(); //Dibujo del edificio
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.3, 0.86, -0.0921]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.162, 1.7, 1.162]);
@@ -316,11 +316,11 @@ function drawRadioStation() {
 }
 
 function drawPoliceStation() {
-    mvPushMatrix()
+    /*mvPushMatrix()
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [3.5362, 0.02, 2.5641]);
     drawElement(app.buffers.cube, null, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
     mvPopMatrix();
-
+*/
     mvPushMatrix(); //Dibujo del edificio
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-0.5413, 0.66, 0]);
     mat4.rotate(app.modelViewMatrix, app.modelViewMatrix, degToRad(-90), [0, 1, 0]);
@@ -345,11 +345,11 @@ function drawPoliceStation() {
 }
 
 function drawRestaurant() {
-    mvPushMatrix()
+    /*mvPushMatrix()
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [3.5362, 0.02, 2.5641]);
     drawElement(app.buffers.cube, null, false, [110.0 / 255.0, 110.0 / 255.0, 110.0 / 255.0, 1.0]);
     mvPopMatrix();
-
+*/
     mvPushMatrix(); //Dibujo del edificio
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.8659, 0.66, 0]);
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1.14, 1.3, 1.14]);
@@ -358,11 +358,11 @@ function drawRestaurant() {
 }
 
 function drawPark() {
-    mvPushMatrix()
+    /*mvPushMatrix()
     mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [3.5362, 0.02, 2.5641]);
     drawElement(app.buffers.cube, null, false, [102.0 / 255.0, 155.0 / 255.0, 65.0 / 255.0, 1.0]);
     mvPopMatrix();
-
+*/
     //Dibujamos los árboles
     mvPushMatrix();
     mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [-1.0366, 0.02, -0.66]);

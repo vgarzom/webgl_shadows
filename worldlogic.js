@@ -177,12 +177,12 @@ function drawWorldObjects() {
   //Dibuamos el cubo de base
   mvPushMatrix();
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [0.0, 0.0, 0.0]);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [12, 0.5, 8]);
-  drawElement(app.buffers.cube, app.depthShadow.fbo, false, [141.0 / 255.0, 198.0 / 255.0, 93.0 / 255.0, 1.0]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [12, 0.52, 8]);
+  drawElement(app.buffers.cube, app.texture.floor, true, [141.0 / 255.0, 198.0 / 255.0, 93.0 / 255.0, 1.0]);
   mvPopMatrix();
 
   // Con las siguientes líneas vamos a dibujar las vías
-  drawStreet();
+  //drawStreet();
 
   mvPushMatrix();
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, [1.6275, 0.26, -2.4185]);  // amount to translate
