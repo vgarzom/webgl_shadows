@@ -161,6 +161,7 @@ function drawElementNormal(buffer, textureobj, hasTexture, bodyColor = [1.0, 1.0
     app.depthShadow.mvpMatrix);
 
   gl.uniform1i(app.programInfo.uniformLocations.hasTexture, hasTexture);
+  gl.uniform1f(app.programInfo.uniformLocations.dayTime, app.dayTime);
   gl.uniform4f(app.programInfo.uniformLocations.bodyColor, bodyColor[0], bodyColor[1], bodyColor[2], bodyColor[3]);
 
   // Specify the texture to map onto the faces.

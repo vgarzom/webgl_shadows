@@ -136,7 +136,7 @@ function drawPointLamp() {
     mat4.getTranslation(worldPosition, app.modelViewMatrix);
     if (app.lights.pointLights.length < 3) {
         app.lights.pointLights.push({
-            intensity: 0.7,
+            intensity: 1.0,
             color: [255/255, 205/255, 52/255, 1.0],
             position: worldPosition
         });

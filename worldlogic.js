@@ -92,7 +92,7 @@ function drawWorld() {
   var sposition = app.lights.directionalLight.direction;
   sposition = [app.camera.zoom * 0.5 * sposition[0], app.camera.zoom * 0.5 * sposition[1], app.camera.zoom * 0.5 * sposition[2]];
   mat4.translate(app.modelViewMatrix, app.modelViewMatrix, sposition);  // amount to translate
-  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [10, 10, 10]);
+  mat4.scale(app.modelViewMatrix, app.modelViewMatrix, [1000, 1000, 1000]);
   drawElement(app.buffers.sphere, app.texture.bricks, false, app.lights.ambientLight);
   mvPopMatrix();
   //---------------------------------------------------------------------------
@@ -107,7 +107,7 @@ function drawWorld() {
 
 function updateDayTime() {
   if (app.animate) {
-    app.dayTime += 0.5*app.deltaTime;
+    app.dayTime += app.deltaTime;
     if (app.dayTime >= 24) {
       app.dayTime = 0;
     }
