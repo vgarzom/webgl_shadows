@@ -102,12 +102,12 @@ function drawStreetLight(lightDirection) {
     mat4.getTranslation(worldPosition, app.modelViewMatrix);
     if (app.lights.spotLights.length < 6) {
         app.lights.spotLights.push({
-            intensity: 1.0,
+            intensity: 5.0,
             color: [1.0, 1.0, 1.0, 1.0],
             position: worldPosition,
             direction: lightDirection,
-            exponent: 3.0,
-            cutoff: 90.0
+            exponent: 7.0,
+            cutoff: 60.0
         });
     }
     mvPopMatrix();
