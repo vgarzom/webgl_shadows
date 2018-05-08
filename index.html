@@ -82,7 +82,7 @@
 
     highp vec3 addPointLight(LightInfo pointLight){
         highp float dist = distance(vPosition.xyz, pointLight.position);
-      highp float md =5.0;
+      highp float md =500.0;
       highp float att=1.0-dist/md;
       if (dist <= md){
         highp vec3 s = normalize (pointLight.position - vPosition.xyz);
